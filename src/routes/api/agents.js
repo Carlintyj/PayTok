@@ -15,6 +15,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET api/agents/:username
+// @desc    Get an agent by username
+// @access  Public
+router.get('/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    const agent = await Agent.findOne({ username });
+
+    if (!agent) {
+        return res.status(404).json({ msg: 'Agent not found' });
+    }
+
+    res.json(agent);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route   POST api/agents
 // @desc    Create a new agent
 // @access  Public

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Agent = require('../../models/Transaction');
+const Transaction = require('../../models/Transaction');
 
 // @route   GET api/transcations
 // @desc    Get the list of transactions
@@ -19,16 +19,21 @@ router.get('/', async (req, res) => {
 // @desc    Get a transaction
 // @access  Public
 router.get('/:transactionId', async (req, res) => {
-  try {
-      const transaction = await Transaction.findById(req.params.transactionId);
-      if (!transaction) {
-          return res.status(404).json({ msg: 'Transaction not found' });
-      }
-      res.json(transaction);
-  } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-  }
+    try {
+        const transactionId = req.params.transactionId;
+
+        // Find the transaction by transactionId
+        const transaction = await Transaction.findOne({ transactionId });
+
+        if (!transaction) {
+            return res.status(404).json({ msg: 'Transaction not found' });
+        }
+
+        res.json(transaction);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 // @route   POST api/transactions
@@ -49,19 +54,24 @@ router.post('/', async (req, res) => {
 // @desc    Delete an agent
 // @access  Public
 router.delete('/:transactionId', async (req, res) => {
-  try {
-      const transaction = await Transaction.findById(req.params.transactionId);
+    try {
+        const transactionId = req.params.transactionId;
 
-      if (!transaction) {
-          return res.status(404).json({ msg: 'Transaction not found' });
-      }
+        // Check if the transaction exists
+        const transaction = await Transaction.findOne({ transactionId });
 
-      await transaction.remove();
-      res.json({ msg: 'Transaction removed' });
-  } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-  }
+        if (!transaction) {
+            return res.status(404).json({ msg: 'Transaction not found' });
+        }
+
+        // Delete the transaction
+        await Transaction.deleteOne({ transactionId });
+
+        res.json({ msg: 'Transaction deleted' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 module.exports = router;

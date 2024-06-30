@@ -15,6 +15,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET api/users/:username
+// @desc    Get an user by username
+// @access  Public
+router.get('/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route   POST api/users
 // @desc    Create a new user
 // @access  Public
