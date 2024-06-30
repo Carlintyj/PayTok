@@ -21,7 +21,7 @@ export default function UserNavbar() {
         navigate('/transactions');
         break;
       case 2:
-        navigate('/pay');
+        navigate('/payment');
         break;
       case 3:
         navigate('/settings');
