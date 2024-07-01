@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -26,14 +27,14 @@ export default function LoginPage() {
           height: "100vh",
           padding: "0 20px",
           backgroundImage: `url(${background})`,
-          backgroundRepeat: 'no-repeat',
+          backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
               ? t.palette.grey[50]
               : t.palette.grey[900],
           backgroundSize: "cover",
           backgroundPosition: "center",
-          '@media (max-width: 600px)': {
+          "@media (max-width: 600px)": {
             backgroundPosition: "top",
           },
         }}
@@ -50,13 +51,17 @@ export default function LoginPage() {
             borderRadius: "20px",
             padding: "30px",
             boxShadow: 3,
-            '@media (max-width: 600px)': {
+            "@media (max-width: 600px)": {
               padding: "20px",
               borderRadius: "15px",
             },
           }}
         >
-          <img src={Logo} alt="logo" style={{ width: "150px", marginBottom: "20px" }} />
+          <img
+            src={Logo}
+            alt="logo"
+            style={{ width: "150px", marginBottom: "20px" }}
+          />
           <Button
             variant="contained"
             sx={{
@@ -67,8 +72,15 @@ export default function LoginPage() {
             }}
             onClick={() => navigate("/home")}
           >
-            Login with TikTok
+            Login with Google
           </Button>
+          <Typography variant="subtitle1" gutterBottom>
+            Or continue with
+          </Typography>
+          <GoogleLogin
+            onSuccess={() => navigate("/home")}
+            onError={(error) => console.log(error)}
+          />
           <Typography variant="body2" color="text.secondary" align="center">
             PayTok helps you pay without cards with ease
           </Typography>

@@ -4,8 +4,7 @@ import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 
 function App() {
-
-  const user  = true; // To be replaced with backend API
+  const user = false; // To be replaced with backend API
 
   return (
     <BrowserRouter>
