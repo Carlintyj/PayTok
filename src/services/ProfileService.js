@@ -1,4 +1,4 @@
-const { createUser, getUserByUid } = require('./UserService');
+const { createUser, getUserByUid, updateUserPin } = require('./UserService');
 
 async function login(uid, name, email) {
   try {
@@ -8,7 +8,7 @@ async function login(uid, name, email) {
       user = await createUser(userData);
     }
 
-    const balance = await getBalance(uid);
+    const balance = user.balance;
     const account = user.account;
 
     return { balance, account };

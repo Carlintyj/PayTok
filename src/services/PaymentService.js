@@ -1,38 +1,36 @@
-const { getBalance, updateBalance } = require('./UserService');
+const { getBalance, updateUserBalance } = require('./UserService');
+const { getBalance } = require('./ProfileService');
 
-async function pay(senderAccId, receiverAccId, amount) {
+async function pay(sender_uid, receiver_uid, amount) {
     try {
-    // Example: Check sender's balance
-    const senderBalance = await getBalance(senderAccId);
+        const senderBalance = await getBalance(sender_uid);
+        const receiverBalance = await getBalance(receiver_uid);
+        const type = 'transfer'
 
-    if (senderBalance < amount) {
-        return false; // Insufficient balance
-    }
+        if (senderBalance < amount) {
+            return false; // Insufficient balance
+        }
 
-    // Example: Update sender's balance
-    await updateBalance(senderAccId, senderBalance - amount);
+        await updateUserBalance(sender_uid, senderBalance - amount);
+        await updateUserBalance(receiver_uid, receiverBalance + amount);
+        const transactionData = { sender_uid, receiver_uid, type, amount };
+        await createTransaction(transactionData);
 
-    // Example: Top up receiver's balance
-    await topup(receiverAccId, amount);
-
-    // Example: Create transaction
-    const transactionData = { senderAccId, receiverAccId, amount };
-    await createTransaction(transactionData);
-
-    return true; // Successful payment
+        return true; // Successful payment
     } catch (error) {
-    console.error('Error in pay:', error);
-    throw error;
+        console.error('Error in pay:', error);
+        throw error;
     }
 }
 
-async function topup(receiverAccId, amount) {
+async function topup(sender_uid, receiver_uid, amount) {
     try {
-        // Example: Get receiver's current balance
-        const receiverBalance = await getBalance(receiverAccId);
+        const receiverBalance = await getBalance(receiver_uid);
+        const type = 'top-up';
 
-        // Example: Update receiver's balance
-        await updateBalance(receiverAccId, receiverBalance + amount);
+        await updateBalance(receiver_uid, receiverBalance + amount);
+        const transactionData = { sender_uid, receiver_uid, type, amount };
+        await createTransaction(transactionData);
 
         return true; // Successful top-up
     } catch (error) {
@@ -43,14 +41,9 @@ async function topup(receiverAccId, amount) {
 
 async function getTransactionsHistory(uid) {
     try {
-      // Example: Fetch transactions for the user
       const transactions = await getTransactions();
-      
-      // Example: Filter transactions by user UID
       const sourceTransactions = transactions.filter(transaction => transaction.source_uid === uid);
       const targetTransactions = transactions.filter(transaction => transaction.target_uid === uid);
-  
-      // Example: Return transaction history
       return { sourceTransactions, targetTransactions };
     } catch (error) {
       console.error('Error in getTransactionsHistory:', error);

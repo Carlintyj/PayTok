@@ -83,6 +83,26 @@ router.put('/:uid/pin', async (req, res) => {
   }
 });
 
+// @route   PUT api/users/:uid/balance
+// @desc    Update an user balance
+// @access  Public
+router.put('/:uid/balance', async (req, res) => {
+  const { balance } = req.body;
+
+  try {
+      let user = await User.findOne({ uid: req.params.uid });
+      if (!user) {
+          return res.status(404).json({ msg: 'User not found' });
+      }
+      user.balance = balance;
+      await user.save();
+      res.json({ msg: `User '${req.params.uid}' balance is updated, user`});
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
 // @route   DELETE api/users/:uid
 // @desc    Delete an user
 // @access  Public

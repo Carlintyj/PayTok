@@ -56,6 +56,16 @@ async function updateUserPin(uid, pin) {
   }
 }
 
+// Function to update user balance by UID
+async function updateUserBalance(uid, balance) {
+  try {
+    const response = await api.put(`/${uid}/balance`, { balance });
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
 // Function to delete user by UID
 async function deleteUser(uid) {
   try {
