@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const TransactionSchema = new Schema({
   transactionId: { type: Number, unique: true },
-  source_username: { type: String, required: true },
-  target_username: { type: String, required: true },
-  type: { type: String, enum: ['deposit', 'withdrawal', 'transfer'], required: true },
+  source_uid: { type: Number, required: true },
+  target_uid: { type: Number, required: true },
+  type: { type: String, enum: ['top-up', 'transfer'], required: true },
   amount: { type: Number, required: true },
   timestamp: { type: Date, default: Date.now },
   description: {type: String }

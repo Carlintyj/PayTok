@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Transaction = require('../../models/Transaction');
+const Transaction = require('../../models/Transactions');
 
 // @route   GET api/transcations
 // @desc    Get the list of transactions

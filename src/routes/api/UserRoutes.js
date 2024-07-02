@@ -15,18 +15,15 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   GET api/users/:username
-// @desc    Get an user by username
+// @route   GET api/users/:uid
+// @desc    Get an user by uid
 // @access  Public
-router.get('/:username', async (req, res) => {
+router.get('/:uid', async (req, res) => {
   try {
-    const username = req.params.username;
-    const user = await User.findOne({ username });
-
+    const user = await User.findOne({ uid: req.params.uid });
     if (!user) {
         return res.status(404).json({ msg: 'User not found' });
     }
-
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -48,41 +45,54 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route   PUT api/users/:username
-// @desc    Update an user
+// @route   PUT api/users/:uid/role
+// @desc    Update an user role
 // @access  Public
-router.put('/:username', async (req, res) => {
-  const { email } = req.body;
-
+router.put('/:uid/role', async (req, res) => {
   try {
-      let user = await User.findOne({ username: req.params.username });
-
+      let user = await User.findOne({ uid: req.params.uid });
       if (!user) {
           return res.status(404).json({ msg: 'User not found' });
       }
-
-      user.email = email;
+      user.role = 'agent';
       await user.save();
-
-      res.json({ msg: `User '${req.params.username}' email updated`, user });
+      res.json({ msg: `User '${req.params.uid}' role is updated, user`});
   } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
   }
 });
 
-// @route   DELETE api/users/:username
+// @route   PUT api/users/:uid/pin
+// @desc    Update an user pin
+// @access  Public
+router.put('/:uid/pin', async (req, res) => {
+  const { pin } = req.body;
+
+  try {
+      let user = await User.findOne({ uid: req.params.uid });
+      if (!user) {
+          return res.status(404).json({ msg: 'User not found' });
+      }
+      user.pin = pin;
+      await user.save();
+      res.json({ msg: `User '${req.params.uid}' pin is updated, user`});
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE api/users/:uid
 // @desc    Delete an user
 // @access  Public
-router.delete('/:username', async (req, res) => {
+router.delete('/:uid', async (req, res) => {
   try {
-    const user = await User.findOneAndDelete({ username: req.params.username });
-
+    const user = await User.findOneAndDelete({ uid: req.params.uid });
     if (!user) {
         return res.status(404).json({ msg: 'User not found' });
     }
-
-    res.json({ msg: `User '${req.params.username}' deleted`, user });
+    res.json({ msg: `User '${req.params.uid}' deleted, user`});
 } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

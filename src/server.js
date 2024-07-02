@@ -1,17 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB Connection
-const uri = "mongodb+srv://admin1:lYTwDHfVH9jLMC86@paytok.0rjgylm.mongodb.net/?retryWrites=true&w=majority&appName=PayTok";
+const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, {
   dbName: "PayTok"
 })
@@ -19,11 +20,9 @@ mongoose.connect(uri, {
 .catch((error) => console.error("MongoDB connection error:", error));
 
 // Routes
-const agentsRouter = require('./routes/api/agents');
-const usersRouter = require('./routes/api/users');
-const transactionsRouter = require('./routes/api/transactions');
+const usersRouter = require('./routes/api/UserRoutes');
+const transactionsRouter = require('./routes/api/TransactionRoutes');
 
-app.use('/api/agents', agentsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 
