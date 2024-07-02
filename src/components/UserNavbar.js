@@ -4,7 +4,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PaymentIcon from '@mui/icons-material/Payment';
-import SettingsIcon from '@mui/icons-material/Settings';
+import ProfileIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 
 export default function UserNavbar() {
@@ -24,7 +24,7 @@ export default function UserNavbar() {
         navigate('/payment');
         break;
       case 3:
-        navigate('/settings');
+        navigate('/profile');
         break;
       default:
         navigate('/');
@@ -46,7 +46,7 @@ export default function UserNavbar() {
       <BottomNavigationAction label="Home" icon={<HomeIcon />} />
       <BottomNavigationAction label="Transactions" icon={<AccountBalanceWalletIcon />} />
       <BottomNavigationAction label="Pay" icon={<PaymentIcon />} />
-      <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
+      <BottomNavigationAction label="Profile" icon={<ProfileIcon />} />
     </BottomNavigation>
   );
 }

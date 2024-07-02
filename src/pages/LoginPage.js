@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -9,10 +10,28 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const defaultTheme = createTheme();
+
+  const handleGoogleLoginSuccess = (response) => {
+    const decoded = jwtDecode(response.credential);
+    console.log("Decoded user info:", decoded);
+    const { email, name } = decoded;
+    console.log("Email:", email);
+    console.log("Name:", name);
+    
+    // Store user info in localStorage
+    localStorage.setItem("user", JSON.stringify({ email, name }));
+
+    // Trigger storage event for other tabs/windows
+    window.dispatchEvent(new Event("storage"));
+
+    // Navigate to home after successful login
+    navigate("/home");
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -62,26 +81,16 @@ export default function LoginPage() {
             alt="logo"
             style={{ width: "150px", marginBottom: "20px" }}
           />
-          <Button
-            variant="contained"
-            sx={{
-              width: "100%",
-              backgroundColor: "primary.main",
-              "&:hover": { backgroundColor: "primary.dark" },
-              mb: 3,
-            }}
-            onClick={() => navigate("/home")}
-          >
-            Login with Google
-          </Button>
-          <Typography variant="subtitle1" gutterBottom>
-            Or continue with
-          </Typography>
           <GoogleLogin
-            onSuccess={() => navigate("/home")}
+            onSuccess={handleGoogleLoginSuccess}
             onError={(error) => console.log(error)}
           />
-          <Typography variant="body2" color="text.secondary" align="center">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            style={{ marginTop: "20px" }}
+          >
             PayTok helps you pay without cards with ease
           </Typography>
         </Box>
