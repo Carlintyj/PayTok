@@ -1,6 +1,4 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -10,8 +8,14 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
+<<<<<<< HEAD
 import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
 import { login } from "../services/ProfileService";
+=======
+import { jwtDecode } from "jwt-decode"; 
+
+// const { login } = require('../services/ProfileService');
+>>>>>>> 9fe8c40c29c7a6b6188db9b1592aaa0829fbed13
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -23,7 +27,8 @@ export default function LoginPage() {
     const { email, name, sub } = decoded;
     console.log("Email:", email);
     console.log("Name:", name);
-
+    console.log("ID:", sub);
+    
     // Store user info in localStorage
     localStorage.setItem("user", JSON.stringify({ email, name }));
 
