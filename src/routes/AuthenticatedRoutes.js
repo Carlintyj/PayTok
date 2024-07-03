@@ -9,6 +9,11 @@ import Transactions from "../pages/TransactionsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AgentNavbar from "../components/AgentNavbar";
 import UserNavbar from "../components/UserNavbar";
+import AccountDetails from "../pages/AccountDetails";
+import WalletSettings from "../pages/WalletSettings";
+import SupportFAQ from "../pages/SupportFAQ";
+import Report from "../pages/Report";
+import Terms from "../pages/Terms";
 
 const AuthenticatedRoutes = () => {
     const agent = false; // To be replaced with backend API
@@ -22,6 +27,11 @@ const AuthenticatedRoutes = () => {
             <Route path="/successfulPayment" element={<SuccessfulPaymentPage />} />
             <Route path="/unsuccessfulPayment" element={<UnsuccessfulPaymentPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/accountdetails" element={<AccountDetails />} />
+            <Route path="/wallet" element={<WalletSettings />} />
+            <Route path="/support" element={<SupportFAQ />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
