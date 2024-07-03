@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 // Example Axios instance configuration
 const api = axios.create({
@@ -22,9 +22,6 @@ async function getUserByUid(uid) {
     const response = await api.get(`/${uid}`);
     return response.data;
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      return null; // User not found, return null
-    }
     handleAxiosError(error);
   }
 }
@@ -85,12 +82,11 @@ function handleAxiosError(error) {
   throw new Error('Server Error');
 }
 
-export {
+module.exports = {
   getUsers,
   getUserByUid,
   createUser,
   updateUserRole,
   updateUserPin,
-  updateUserBalance,
   deleteUser,
 };
