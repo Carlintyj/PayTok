@@ -8,15 +8,20 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
+<<<<<<< HEAD
+import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
+import { login } from "../services/ProfileService";
+=======
 import { jwtDecode } from "jwt-decode"; 
 
 // const { login } = require('../services/ProfileService');
+>>>>>>> 9fe8c40c29c7a6b6188db9b1592aaa0829fbed13
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const defaultTheme = createTheme();
 
-  const handleGoogleLoginSuccess = (response) => {
+  const handleGoogleLoginSuccess = async (response) => {
     const decoded = jwtDecode(response.credential);
     console.log("Decoded user info:", decoded);
     const { email, name, sub } = decoded;

@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 // Example Axios instance configuration
 const api = axios.create({
@@ -19,9 +19,12 @@ async function getTransactions() {
 // Function to get a transaction by transactionId
 async function getTransactionById(transactionId) {
   try {
-    const response = await api.get(`/${transactionId}`);
+    const response = await api.get('/${transactionId}');
     return response.data;
   } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return null; // User not found, return null
+    }
     handleAxiosError(error);
   }
 }
@@ -39,7 +42,7 @@ async function createTransaction(transactionData) {
 // Function to delete a transaction by transactionId
 async function deleteTransaction(transactionId) {
   try {
-    const response = await api.delete(`/${transactionId}`);
+    const response = await api.delete('/${transactionId}');
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -52,7 +55,7 @@ function handleAxiosError(error) {
   throw new Error('Server Error');
 }
 
-module.exports = {
+export {
   getTransactions,
   getTransactionById,
   createTransaction,
