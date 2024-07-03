@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   pin: { type: String },
   role: { type: String, enum: ['user', 'agent'], default: 'user' },
   account: { type: Number, unique: true },
-  balance: { type: Number }
+  balance: { type: Number, default: '0' }
 });
 
 async function generateUniqueAccountNumber() {

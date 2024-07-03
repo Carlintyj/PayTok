@@ -11,18 +11,19 @@ import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
+import { login } from "../services/ProfileService";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const defaultTheme = createTheme();
 
-  const handleGoogleLoginSuccess = (response) => {
+  const handleGoogleLoginSuccess = async (response) => {
     const decoded = jwtDecode(response.credential);
     console.log("Decoded user info:", decoded);
-    const { email, name } = decoded;
+    const { email, name, sub } = decoded;
     console.log("Email:", email);
     console.log("Name:", name);
-    
+
     // Store user info in localStorage
     localStorage.setItem("user", JSON.stringify({ email, name }));
 

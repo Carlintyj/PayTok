@@ -1,16 +1,15 @@
 const { createUser, getUserByUid, updateUserPin } = require('./UserService');
 
-async function login(uid, name, email) {
+async function login(uid, username, email) {
   try {
     let user = await getUserByUid(uid);
     if (!user) {
-      const userData = { uid, name, email };
+      const userData = { uid, username, email };
       user = await createUser(userData);
     }
 
     const balance = user.balance;
     const account = user.account;
-
     return { balance, account };
   } catch (error) {
     console.error('Error in login:', error);
@@ -40,7 +39,7 @@ async function checkPin(uid, pin) {
     }
 
     const hashedPin = crypto.createHash('sha256').update(pin).digest('hex');
-    return user.pin == hashedPin;
+    return user.pin === hashedPin;
   } catch (error) {
     console.error('Error in checkPin:', error);
     throw error;
