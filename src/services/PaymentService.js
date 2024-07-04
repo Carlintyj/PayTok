@@ -1,8 +1,10 @@
-const { updateUserBalance } = require("./UserService");
+const { getUserByAccount, updateUserBalance } = require("./UserService");
 const { getBalance } = require("./ProfileService");
 
-async function pay(sender_uid, receiver_uid, amount) {
+async function pay(sender_acc, receiver_acc, amount) {
   try {
+    const sender_uid = await getUserByAccount(sender_acc);
+    const receiver_uid = await getUserByAccount(receiver_acc);
     const senderBalance = await getBalance(sender_uid);
     const receiverBalance = await getBalance(receiver_uid);
     const type = "transfer";
@@ -22,8 +24,10 @@ async function pay(sender_uid, receiver_uid, amount) {
   }
 }
 
-async function topup(sender_uid, receiver_uid, amount) {
+async function topup(sender_acc, receiver_acc, amount) {
   try {
+    const sender_uid = await getUserByAccount(sender_acc);
+    const receiver_uid = await getUserByAccount(receiver_acc);
     const receiverBalance = await getBalance(receiver_uid);
     const type = "top-up";
 
