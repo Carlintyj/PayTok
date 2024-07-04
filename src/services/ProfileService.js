@@ -1,5 +1,6 @@
 // const crypto = require("crypto");
 const { createUser, getUserByUid, updateUserPin } = require("./UserService");
+const crypto = require("crypto");
 
 async function login(uid, username, email) {
   try {
