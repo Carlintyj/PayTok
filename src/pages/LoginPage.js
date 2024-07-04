@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -8,30 +9,118 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
+import { login, checkPin, isPinExist } from "../services/ProfileService";
+import { updateUserPin } from "../services/UserService";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
-// const { login } = require('../services/ProfileService');
+const Keypad = ({ onKeypadClick }) => {
+  const keypadLayout = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [null, 0, "delete"],
+  ];
+
+  const handleKeypadClick = (key) => {
+    onKeypadClick(key);
+  };
+
+  return (
+    <Grid container spacing={1}>
+      {keypadLayout.map((row, rowIndex) => (
+        <Grid key={rowIndex} container item xs={12} justifyContent="center">
+          {row.map((key, index) => (
+            <Grid key={index} item>
+              <Paper
+                variant="outlined"
+                sx={{
+                  width: 50,
+                  height: 50,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleKeypadClick(key)}
+              >
+                {key === "delete" ? (
+                  <Typography variant="body1">←</Typography>
+                ) : (
+                  <Typography variant="body1">{key}</Typography>
+                )}
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const defaultTheme = createTheme();
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
+  const [openPinModal, setOpenPinModal] = useState(false);
+  const [pin, setPin] = React.useState("");
+  const [enteredPin, setEnteredPin] = React.useState("");
 
-  const handleGoogleLoginSuccess = (response) => {
+  const handleGoogleLoginSuccess = async (response) => {
     const decoded = jwtDecode(response.credential);
-    console.log("Decoded user info:", decoded);
-    const { email, name, sub } = decoded;
-    console.log("Email:", email);
-    console.log("Name:", name);
-    console.log("ID:", sub);
-    
+    const { email, name, sub, picture } = decoded;
+
+    const { role, account } = await login(sub, name, email);
+    const uid = sub;
+
+    // Check if PIN exists for the user
+    const pinExists = await isPinExist(uid);
+    setIsFirstLogin(!pinExists);
+    setOpenPinModal(true);
+
     // Store user info in localStorage
-    localStorage.setItem("user", JSON.stringify({ email, name }));
+    localStorage.setItem("user", JSON.stringify({ uid, email, name, account, role, picture, isAuth: false }));
 
     // Trigger storage event for other tabs/windows
     window.dispatchEvent(new Event("storage"));
+  };
 
-    // Navigate to home after successful login
-    navigate("/home");
+  const handleCreatePin = () => {
+    const uid = JSON.parse(localStorage.getItem("user")).uid;
+    updateUserPin(uid, pin).then(() => {
+      setOpenPinModal(false);
+      localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: true }));
+    }).then(() => {
+      navigate("/home");
+      window.location.reload();
+    });
+  }
+
+  const handleEnterPin = () => {
+    const uid = JSON.parse(localStorage.getItem("user")).uid;
+    checkPin(uid, enteredPin).then((result) => {
+      if (result) {
+        setOpenPinModal(false);
+        localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: true }));
+        navigate("/home");
+        window.location.reload();
+      } else {
+        alert("Incorrect PIN. Please try again.");
+        setEnteredPin("");
+      }
+    });
+  }
+
+  const handleKeypadClick = (key) => {
+    if (key === "delete") {
+      setEnteredPin(enteredPin.slice(0, -1));
+    } else if (enteredPin.length < 6) {
+      setEnteredPin(enteredPin + key);
+    }
   };
 
   return (
@@ -96,6 +185,60 @@ export default function LoginPage() {
           </Typography>
         </Box>
       </Container>
+      <Modal
+        open={openPinModal}
+        onClose={() => setOpenPinModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 300,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {isFirstLogin ? "Create PIN" : "Enter PIN"}
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+            <Box sx={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+              {[...Array(6)].map((_, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: "50%",
+                    backgroundColor: enteredPin.length > index ? "#000" : "#ccc",
+                    margin: "0 4px",
+                  }}
+                />
+              ))}
+            </Box>
+            <TextField
+              label="PIN"
+              type="password"
+              value={enteredPin}
+              InputProps={{ disableUnderline: true }}
+              sx={{ width: "100%", textAlign: "center", marginBottom: "20px" }}
+            />
+            <Keypad onKeypadClick={handleKeypadClick} />
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={isFirstLogin ? handleCreatePin : handleEnterPin}
+            >
+              {isFirstLogin ? "Create PIN" : "Enter PIN"}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </ThemeProvider>
   );
 }

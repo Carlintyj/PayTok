@@ -1,15 +1,15 @@
-const axios = require('axios');
+import axios from "axios";
 
 // Example Axios instance configuration
 const api = axios.create({
-  baseURL: 'http://localhost:4000/api/users', // Adjust URL as per your API endpoint
+  baseURL: "http://localhost:4000/api/users", // Adjust URL as per your API endpoint
   timeout: 5000, // Timeout after 5 seconds
 });
 
 // Function to get all users
 async function getUsers() {
   try {
-    const response = await api.get('/');
+    const response = await api.get("/");
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -19,7 +19,17 @@ async function getUsers() {
 // Function to get user by UID
 async function getUserByUid(uid) {
   try {
-    const response = await api.get(`/${uid}`);
+    const response = await api.get(`/uid/${uid}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+// Function to get user by Account
+async function getUserByAccount(account) {
+  try {
+    const response = await api.get(`/accoun/${account}`);
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -29,7 +39,7 @@ async function getUserByUid(uid) {
 // Function to create a new user
 async function createUser(userData) {
   try {
-    const response = await api.post('/', userData);
+    const response = await api.post("/", userData);
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -78,15 +88,16 @@ async function deleteUser(uid) {
 
 // Helper function to handle Axios errors
 function handleAxiosError(error) {
-  console.error('Axios request failed:', error.message);
-  throw new Error('Server Error');
+  return null;
 }
 
-module.exports = {
+export {
   getUsers,
   getUserByUid,
+  getUserByAccount,
   createUser,
   updateUserRole,
   updateUserPin,
+  updateUserBalance,
   deleteUser,
 };

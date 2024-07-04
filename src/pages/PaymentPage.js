@@ -6,7 +6,7 @@ export default function PaymentPage() {
   const navigate = useNavigate();
 
   const handlePayClick = () => {
-    // TODO: Replace with actual balance retrieval logic
+    // TODO: Replace with actual pay logic
     if(true) {
       navigate("/successfulPayment");
     }
@@ -38,6 +38,7 @@ export default function PaymentPage() {
         }}
       >
         <Avatar
+          // TODO: Replace with actual user avatar
           sx={{
             width: 100,
             height: 100,
@@ -46,6 +47,7 @@ export default function PaymentPage() {
         >
         </Avatar>
         <TextField
+          // TODO: Replace with actual user name
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -62,6 +64,7 @@ export default function PaymentPage() {
         </Typography>
       </Paper>
       <TextField
+        // TODO: Replace with actual amount input logic
         label="Enter amount"
         sx={{
           width: "50%",

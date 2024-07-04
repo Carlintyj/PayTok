@@ -1,12 +1,12 @@
-import "./App.css";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
-import { useEffect, useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function App() {
-  const [user, setUser] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
   const theme = createTheme({
     typography: {
       fontFamily: [
@@ -20,6 +20,24 @@ function App() {
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
+      h1: {
+        fontSize: '2rem', // Adjust as needed
+      },
+      h2: {
+        fontSize: '1.75rem', // Adjust as needed
+      },
+      h3: {
+        fontSize: '1.5rem', // Adjust as needed
+      },
+      h4: {
+        fontSize: '1.25rem', // Adjust as needed
+      },
+      h5: {
+        fontSize: '1rem', // Adjust as needed
+      },
+      h6: {
+        fontSize: '0.875rem', // Adjust as needed
+      },
     },
     palette: {
       primary: {
@@ -30,31 +48,17 @@ function App() {
       },
     },
   });
-  
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    setUser(!!user);
-  }, []);
-
-  useEffect(() => {
-    // Listen to storage events to update user state across tabs/windows
-    const handleStorageChange = () => {
-      const user = localStorage.getItem("user");
-      setUser(!!user);
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsAuth(user && user.isAuth);
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      {user ? <AuthenticatedRoutes /> : <PublicRoutes />}
-    </BrowserRouter>
+      <BrowserRouter>
+        {isAuth ? <AuthenticatedRoutes /> : <PublicRoutes />}
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

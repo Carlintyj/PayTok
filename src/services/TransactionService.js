@@ -1,15 +1,15 @@
-const axios = require('axios');
+import axios from "axios";
 
 // Example Axios instance configuration
 const api = axios.create({
-  baseURL: 'http://localhost:4000/api/transactions', // Adjust URL as per your API endpoint
+  baseURL: "http://localhost:4000/api/transactions", // Adjust URL as per your API endpoint
   timeout: 5000, // Timeout after 5 seconds
 });
 
 // Function to get all transactions
 async function getTransactions() {
   try {
-    const response = await api.get('/');
+    const response = await api.get("/");
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -29,7 +29,7 @@ async function getTransactionById(transactionId) {
 // Function to create a new transaction
 async function createTransaction(transactionData) {
   try {
-    const response = await api.post('/', transactionData);
+    const response = await api.post("/", transactionData);
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -48,11 +48,10 @@ async function deleteTransaction(transactionId) {
 
 // Helper function to handle Axios errors
 function handleAxiosError(error) {
-  console.error('Axios request failed:', error.message);
-  throw new Error('Server Error');
+  return null;
 }
 
-module.exports = {
+export {
   getTransactions,
   getTransactionById,
   createTransaction,

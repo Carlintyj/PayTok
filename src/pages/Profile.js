@@ -18,6 +18,13 @@ export default function Profile() {
     }
   }, []);
 
+  const getImageURL = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      return user.picture;
+    }
+  };
+
   const navigate = useNavigate();
 
   const handleAccountDetailsClick = () => {
@@ -45,12 +52,13 @@ export default function Profile() {
     googleLogout();
     
     // Remove user from localStorage
-    localStorage.removeItem("user");
+    localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: false }));
     
     // Trigger storage event for other tabs/windows
     window.dispatchEvent(new Event("storage"));
     
     // Navigate to login page
+    window.location.reload();
     navigate("/");
   };
 
@@ -83,6 +91,7 @@ export default function Profile() {
             height: 100,
             marginBottom: "10px",
           }}
+          src={getImageURL()}
         >
         </Avatar>
         <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>

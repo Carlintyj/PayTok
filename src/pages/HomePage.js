@@ -1,21 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Button, Container, Paper } from "@mui/material";
+import { Typography, Box, Button, Container, Paper, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Payment, Storefront, QrCode } from "@mui/icons-material";
+import { Payment, Storefront, QrCode, ContentCopy } from "@mui/icons-material";
 import TikTokLogo from "../assets/tiktok-store.jpg";
+import { getBalance } from "../services/ProfileService";
 
 export default function HomePage() {
   const [name, setName] = useState("");
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
+    const fetchBalance = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setName(user.name);
+        try {
+          const balance = await getBalance(user.uid);
+          setBalance(balance !== null ? balance : 0);
+        } catch (error) {
+          console.error("Failed to fetch balance", error);
+          setBalance(0);
+        }
+      }
+    };
+
+    fetchBalance();
+  }, []);
+
+  const getAccount_id = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      setName(user.name);
+      return user.account;
     }
-    // TODO: Replace with actual balance retrieval logic
-    setBalance(0);
-  }, []);
+    return "";
+  }
+
+  const handleCopyClick = () => {
+    const accountId = getAccount_id();
+    navigator.clipboard.writeText(accountId).then(() => {
+      alert("Account ID copied to clipboard");
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  };
 
   const navigate = useNavigate();
 
@@ -60,21 +87,27 @@ export default function HomePage() {
           borderRadius: "10px",
         }}
       >
-        <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
+        <Typography variant="h5" sx={{ marginBottom: "10px", color: "#fff" }}>
           Welcome back, {name}
         </Typography>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: "90%",
+            width: "80%",
             borderRadius: "10px",
             border: 1,
             padding: "20px",
             backgroundColor: "#ffffff",
           }}
         >
-          <Typography variant="h6" gutterBottom sx={{ marginBottom: "10px" }}>
+          <Typography variant="h6">
+            Account ID: <span style={{ fontWeight: "bold" }}>{getAccount_id()}</span>
+            <IconButton onClick={handleCopyClick}>
+              <ContentCopy sx={{ fontSize: "16px" }}/>
+            </IconButton>
+          </Typography>
+          <Typography variant="h6" sx={{ marginBottom: "10px" }}>
             PayTok Account Balance
           </Typography>
           <Typography variant="h4" sx={{ color: "#55AD9B", fontWeight: "bold" }}>
@@ -150,7 +183,7 @@ export default function HomePage() {
             flexDirection: "column",
             width: "95%",
           }}>
-      <Typography variant="h6" gutterBottom sx={{ marginTop: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold"}}>
+      <Typography variant="h6" sx={{ marginTop: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold"}}>
         Discover
       </Typography>
       </Box>
