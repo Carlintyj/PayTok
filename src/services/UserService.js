@@ -78,8 +78,7 @@ async function deleteUser(uid) {
 
 // Helper function to handle Axios errors
 function handleAxiosError(error) {
-  console.error("Axios request failed:", error.message);
-  throw new Error("Server Error");
+  return null;
 }
 
 export {

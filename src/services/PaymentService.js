@@ -1,4 +1,4 @@
-const { getBalance, updateUserBalance } = require("./UserService");
+const { updateUserBalance } = require("./UserService");
 const { getBalance } = require("./ProfileService");
 
 async function pay(sender_uid, receiver_uid, amount) {
@@ -7,8 +7,8 @@ async function pay(sender_uid, receiver_uid, amount) {
     const receiverBalance = await getBalance(receiver_uid);
     const type = "transfer";
 
-    if (senderBalance < amount) {
-      return false; // Insufficient balance
+    if (senderBalance < amount || amount < 0) {
+      return null; // Insufficient balance
     }
 
     await updateUserBalance(sender_uid, senderBalance - amount);
@@ -18,8 +18,7 @@ async function pay(sender_uid, receiver_uid, amount) {
 
     return true; // Successful payment
   } catch (error) {
-    console.error("Error in pay:", error);
-    throw error;
+    handleAxiosError(error);
   }
 }
 
@@ -34,25 +33,25 @@ async function topup(sender_uid, receiver_uid, amount) {
 
     return true; // Successful top-up
   } catch (error) {
-    console.error("Error in topup:", error);
-    throw error;
+    handleAxiosError(error);
   }
 }
 
 async function getTransactionsHistory(uid) {
   try {
     const transactions = await getTransactions();
-    const sourceTransactions = transactions.filter(
-      (transaction) => transaction.source_uid === uid
+    transactions = transactions.filter(
+      (transaction) =>
+        transaction.source_uid === uid || transaction.target_uid === uid
     );
-    const targetTransactions = transactions.filter(
-      (transaction) => transaction.target_uid === uid
-    );
-    return { sourceTransactions, targetTransactions };
+    return transactions;
   } catch (error) {
-    console.error("Error in getTransactionsHistory:", error);
-    throw error;
+    handleAxiosError(error);
   }
+}
+
+function handleAxiosError(error) {
+  return null;
 }
 
 module.exports = {

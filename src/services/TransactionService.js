@@ -48,7 +48,6 @@ async function deleteTransaction(transactionId) {
 
 // Helper function to handle Axios errors
 function handleAxiosError(error) {
-  console.error("Axios request failed:", error.message);
   return null;
 }
 

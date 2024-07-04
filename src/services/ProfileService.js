@@ -10,11 +10,9 @@ async function login(uid, username, email) {
 
     const role = user.role;
     const account = user.account;
-
     return { role, account };
   } catch (error) {
-    console.error("Error in login:", error);
-    throw error;
+    handleAxiosError(error);
   }
 }
 
@@ -22,13 +20,12 @@ async function getBalance(uid) {
   try {
     const user = await getUserByUid(uid);
     if (!user) {
-      throw new Error("User not found");
+      return null;
     }
 
     return user.balance;
   } catch (error) {
-    console.error("Error in getBalance:", error);
-    throw error;
+    handleAxiosError(error);
   }
 }
 
@@ -36,14 +33,13 @@ async function checkPin(uid, pin) {
   try {
     const user = await getUserByUid(uid);
     if (!user) {
-      throw new Error("User not found");
+      return null;
     }
 
     const hashedPin = crypto.createHash("sha256").update(pin).digest("hex");
     return user.pin === hashedPin;
   } catch (error) {
-    console.error("Error in checkPin:", error);
-    throw error;
+    handleAxiosError(error);
   }
 }
 
@@ -51,16 +47,18 @@ async function changePin(uid, oldPin, newPin) {
   try {
     const isValid = await checkPin(uid, oldPin);
     if (!isValid) {
-      throw new Error("Invalid Pin");
+      return null;
     }
 
     const status = await updateUserPin(uid, newPin);
-
-    return status ? true : false;
+    return status ? true : null;
   } catch (error) {
-    console.error("Error in setPin:", error);
-    throw error;
+    handleAxiosError(error);
   }
+}
+
+function handleAxiosError(error) {
+  return null;
 }
 
 module.exports = {
