@@ -2,33 +2,55 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Paper, Container, FormGroup } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
+import { checkPin, changePin } from "../services/ProfileService";
 
-export default function WalletSettings() {
+
+export default function ChangePIN() {
     const navigate = useNavigate();
 
-    const [card, setCard] = useState("");
-    const [exp, setExp] = useState("");
-    const [cvv, setCvv] = useState("");
+    const [account, setAccount] = useState("");
+    useEffect(() => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setAccount(user.account);
+      }
+    }, []);
 
-    const handleCardChange = () => {
-        setCard(card)
+    const [oldpin, setOldpin] = useState("");
+    const [newpin, setNewpin] = useState("");
+    const [cnewpin, setCnewpin] = useState("");
+
+    const handleOldChange = () => {
+        setOldpin(oldpin)
     };
 
-    const handleExpChange = () => {
-        setExp(exp)
+    const handleNewChange = () => {
+        setNewpin(newpin)
     };
 
-    const handleCvvChange = () => {
-        setCvv(cvv)
+    const handleCnewChange = () => {
+        setCnewpin(cnewpin)
     };
-
-    const handleSubmit = () => {
-
-  };
 
     const handleBackClick = () => {
-      navigate("/profile");
+      navigate("/accountdetails");
     };
+
+        
+    const handleSubmit = () => {
+        
+        if(newpin!==cnewpin){
+            return <Typography>not same</Typography>
+        }
+        else if (!checkPin(account, oldpin)){
+            return <Typography>not old</Typography>
+        }
+        else{
+            changePin(account, oldpin, newpin)
+            return <Typography>ok</Typography>
+        }
+    };
+
   
     return (
       <Container
@@ -54,46 +76,47 @@ export default function WalletSettings() {
             }}
         >
             <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
-            Wallet Settings
+            Change PIN
             </Typography>
         </Paper>
-
+        
         <form onSubmit={handleSubmit}>
             <FormGroup>
-                <TextField onChange={handleCardChange}
+                <TextField onChange={handleOldChange}
                 required
-                label="Card Number"
-                defaultValue={card}
+                label="Old PIN"
+                defaultValue={oldpin}
                 sx={{margin:"10px"}}
                 />
             
             </FormGroup>
 
             <FormGroup>
-                <TextField onChange={handleExpChange}
+                <TextField onChange={handleNewChange}
                 required
-                label="Expiry Date (MM/YY)"
-                defaultValue={exp}
+                label="New PIN"
+                defaultValue={newpin}
                 sx={{margin:"10px"}}
                 />
+            </FormGroup>
             
-            
-
-                <TextField onChange={handleCvvChange}
+            <FormGroup>
+                <TextField onChange={handleCnewChange}
                 required
-                label="CVV (3 digits)"
-                defaultValue={cvv}
+                label="Confirm New Pin"
+                defaultValue={cnewpin}
                 sx={{margin:"10px"}}
                 />
             </FormGroup>
             
             <FormGroup>
                 <Button type="submit"
-                sx={{margin:"10px"}}>Add Card</Button>
+                sx={{margin:"10px"}}>Change PIN</Button>
             </FormGroup>
             
 
         </form>
+        
 
         <Button onClick={handleBackClick}>Back</Button>
         
