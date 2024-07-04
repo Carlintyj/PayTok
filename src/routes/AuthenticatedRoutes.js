@@ -14,7 +14,7 @@ import WalletSettings from "../pages/WalletSettings";
 import SupportFAQ from "../pages/SupportFAQ";
 import Report from "../pages/Report";
 import Terms from "../pages/Terms";
-
+import ChangePIN from "../pages/ChangePIN";
 const AuthenticatedRoutes = () => {
     const agent = false; // To be replaced with backend API
 
@@ -32,6 +32,7 @@ const AuthenticatedRoutes = () => {
             <Route path="/support" element={<SupportFAQ />} />
             <Route path="/report" element={<Report />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/changepin" element={<ChangePIN />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
