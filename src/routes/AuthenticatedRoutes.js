@@ -20,22 +20,24 @@ const AuthenticatedRoutes = () => {
 
     return (
         <>
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/successfulPayment" element={<SuccessfulPaymentPage />} />
-            <Route path="/unsuccessfulPayment" element={<UnsuccessfulPaymentPage />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/accountdetails" element={<AccountDetails />} />
-            <Route path="/wallet" element={<WalletSettings />} />
-            <Route path="/support" element={<SupportFAQ />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-        {agent ? <AgentNavbar /> : <UserNavbar />}
+            <div style={{ minHeight: "110vh" }}>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
+                    <Route path="/successfulPayment" element={<SuccessfulPaymentPage />} />
+                    <Route path="/unsuccessfulPayment" element={<UnsuccessfulPaymentPage />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/accountdetails" element={<AccountDetails />} />
+                    <Route path="/wallet" element={<WalletSettings />} />
+                    <Route path="/support" element={<SupportFAQ />} />
+                    <Route path="/report" element={<Report />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/transactions" element={<Transactions />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </div>
+            {agent ? <AgentNavbar /> : <UserNavbar />}
         </>
     );
 };
