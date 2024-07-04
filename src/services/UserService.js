@@ -26,6 +26,16 @@ async function getUserByUid(uid) {
   }
 }
 
+// Function to get user by Account
+async function getUserByAccount(account) {
+  try {
+    const response = await api.get(`/${account}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
 // Function to create a new user
 async function createUser(userData) {
   try {
@@ -84,6 +94,7 @@ function handleAxiosError(error) {
 export {
   getUsers,
   getUserByUid,
+  getUserByAccount,
   createUser,
   updateUserRole,
   updateUserPin,
