@@ -19,7 +19,7 @@ async function getUsers() {
 // Function to get user by UID
 async function getUserByUid(uid) {
   try {
-    const response = await api.get(`/${uid}`);
+    const response = await api.get(`/uid/${uid}`);
     return response.data;
   } catch (error) {
     handleAxiosError(error);
@@ -29,7 +29,7 @@ async function getUserByUid(uid) {
 // Function to get user by Account
 async function getUserByAccount(account) {
   try {
-    const response = await api.get(`/${account}`);
+    const response = await api.get(`/accoun/${account}`);
     return response.data;
   } catch (error) {
     handleAxiosError(error);

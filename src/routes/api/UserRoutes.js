@@ -18,9 +18,8 @@ router.get("/", async (req, res) => {
 // @route   GET api/users/:uid
 // @desc    Get an user by uid
 // @access  Public
-router.get("/:uid", async (req, res) => {
+router.get("/uid/:uid", async (req, res) => {
   try {
-    console.log("1");
     const user = await User.findOne({ uid: req.params.uid });
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
@@ -35,9 +34,9 @@ router.get("/:uid", async (req, res) => {
 // @route   GET api/users/:account
 // @desc    Get an user by account
 // @access  Public
-router.get("/:account/acc", async (req, res) => {
+router.get("/account/:account", async (req, res) => {
   try {
-    const user = await User.findOne({ uid: req.params.account });
+    const user = await User.findOne({ account: req.params.account });
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }

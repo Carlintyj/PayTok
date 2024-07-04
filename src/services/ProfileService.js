@@ -29,6 +29,19 @@ async function getBalance(uid) {
   }
 }
 
+async function isPinExist(uid) {
+  try {
+    const user = await getUserByUid(uid);
+    if (!user) {
+      return null;
+    }
+
+    return user.pin != null;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
 async function checkPin(uid, pin) {
   try {
     const user = await getUserByUid(uid);
@@ -64,6 +77,7 @@ function handleAxiosError(error) {
 module.exports = {
   login,
   getBalance,
+  isPinExist,
   checkPin,
   changePin,
 };
