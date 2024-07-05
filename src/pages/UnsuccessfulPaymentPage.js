@@ -1,12 +1,11 @@
 import * as React from "react";
 import { Button, Typography, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function UnsuccessfulPaymentPage() {
-  const navigate = useNavigate();
 
-  const handleHomeClick = () => {
-    navigate("/home");
+  const handleBackClick = () => {
+    window.location.reload();
   };
 
   return (
@@ -17,23 +16,26 @@ export default function UnsuccessfulPaymentPage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
+        alignContent: "center",
         minHeight: "100vh",
         backgroundColor: "#F1F8E8",
       }}
     >
-      <Typography variant="h5" sx={{alignContent: "center", marginTop:"300px", color: "#000000", fontWeight: "bold"}}>
-        Payment unsuccessful.
+      <CancelIcon sx={{fontSize: "200px", color: "#FF0000"}}/>
+      <Typography variant="h5" sx={{alignContent: "center", marginTop: "20px", fontWeight: "bold"}}>
+        Payment unsuccessful!
       </Typography>
-      <Typography variant="h5" sx={{alignContent: "center", color: "#000000", fontWeight: "bold"}}>
-        Please try again.
-      </Typography>
+      <Typography variant="h6" sx={{alignContent: "center", marginTop: "20px"}}>
+        An error has occured, please try again later.
+        </Typography>
       <Button
-        onClick={handleHomeClick}
+        onClick={handleBackClick}
         variant="contained"
         gutterBottom
         sx={{color:"#ffffff", marginTop: "100px", marginBottom: "20px", fontWeight: "bold", backgroundColor: "#55AD9B", "&:hover": { backgroundColor: "#55AD9B"}}}
       >
-        Return Home
+        Back
       </Button>
     </Container>
   );

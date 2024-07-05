@@ -1,4 +1,4 @@
-const { getUserByAccount, updateUserBalance } = require("./UserService");
+const { getUserByAccount, updateUserBalance, getUserByUid } = require("./UserService");
 const { getBalance } = require("./ProfileService");
 const { createTransaction, getTransactions } = require("./TransactionService");
 
@@ -48,10 +48,11 @@ async function topup(sender_acc, receiver_acc, amount) {
 
 async function getTransactionsHistory(uid) {
   try {
-    const transactions = await getTransactions();
+    const { account: user_account_id } = await getUserByUid(uid);
+    var transactions = await getTransactions();
     transactions = transactions.filter(
       (transaction) =>
-        transaction.source_uid === uid || transaction.target_uid === uid
+        transaction.sender_acc == user_account_id || transaction.receiver_acc == user_account_id
     );
     return transactions;
   } catch (error) {

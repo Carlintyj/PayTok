@@ -7,9 +7,8 @@ import {
   TextField,
   Box,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { CreditCard } from "@mui/icons-material";
-import  { topup } from "../services/PaymentService"; 
+import { topup } from "../services/PaymentService";
 
 export default function WalletSettings() {
 
@@ -38,7 +37,11 @@ export default function WalletSettings() {
   };
 
   const handleExpChange = (event) => {
-    setExp(event.target.value);
+    let value = event.target.value.replace(/[^0-9]/g, ""); // Remove all non-numeric characters
+    if (value.length > 2) {
+      value = value.slice(0, 2) + "/" + value.slice(2); // Insert '/' after the second digit
+    }
+    setExp(value.slice(0, 5)); // Limit to MM/YY format
   };
 
   const handleCvvChange = (event) => {
@@ -48,7 +51,6 @@ export default function WalletSettings() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //TODO: Add card logic here
     topup(8268014734, account, 1000).then((response) => {
       if (response) {
         alert("Top up successful!");
@@ -126,7 +128,6 @@ export default function WalletSettings() {
             variant="outlined"
             inputProps={{
               maxLength: 5, // Limit to MM/YY format
-              pattern: "[0-9]*",
             }}
           />
 

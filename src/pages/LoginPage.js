@@ -64,6 +64,7 @@ const Keypad = ({ onKeypadClick }) => {
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   const defaultTheme = createTheme();
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [openPinModal, setOpenPinModal] = useState(false);
@@ -133,7 +134,7 @@ export default function LoginPage() {
         navigate("/home");
         window.location.reload();
       } else {
-        alert("Incorrect PIN. Please try again.");
+        setError("Incorrect PIN. Please try again.");
         setEnteredPin("");
       }
     });
@@ -221,7 +222,7 @@ export default function LoginPage() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 300,
+            width: "70%",
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -264,13 +265,15 @@ export default function LoginPage() {
               type="password"
               value={enteredPin}
               InputProps={{ disableUnderline: true }}
-              sx={{ width: "100%", textAlign: "center", marginBottom: "20px" }}
+              sx={{ width: "100%", textAlign: "center", marginBottom: "10px" }}
             />
+            <Typography variant="body2" color="error" marginBottom={"10px"}>{error}</Typography>
             <Keypad onKeypadClick={handleKeypadClick} />
             <Button
               variant="contained"
               fullWidth
               onClick={isFirstLogin ? handleCreatePin : handleEnterPin}
+              sx={{ marginTop: "20px" }}
             >
               {isFirstLogin ? "Create PIN" : "Enter PIN"}
             </Button>

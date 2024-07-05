@@ -85,7 +85,6 @@ export default function Profile() {
           width: "100%",
           backgroundColor: "#55AD9B",
           padding: "20px",
-          borderRadius: "10px",
           marginBottom: "20px",
         }}
       >

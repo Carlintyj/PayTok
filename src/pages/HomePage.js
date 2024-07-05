@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Payment, Storefront, QrCode, ContentCopy } from "@mui/icons-material";
 import TikTokLogo from "../assets/tiktok-store.jpg";
 import { getBalance } from "../services/ProfileService";
-import { set } from "mongoose";
 
 export default function HomePage() {
   const [name, setName] = useState("");
