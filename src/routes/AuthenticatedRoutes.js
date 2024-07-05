@@ -21,7 +21,7 @@ const AuthenticatedRoutes = () => {
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user) {
-          setIsAgent(user.role == "agent");
+          setIsAgent(user.role === "agent");
         }
       }, []);
 

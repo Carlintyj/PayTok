@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getUserByAccount } from "../services/UserService";
-import { useNavigate } from "react-router-dom";
-import { Button, Typography, Box, Modal, Fade, Paper, Avatar } from "@mui/material";
+import { Button, Typography, Box, Modal, Fade, Paper } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
 import Logo from "../assets/Logo.png";
 
 export default function TransactionHistoryCard({ amount, receiver_acc, sender_acc, type, timestamp }) {
   const [otherPartyName, setOtherPartyName] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
   const account_id = JSON.parse(localStorage.getItem("user"))?.account;
 
   useEffect(() => {

@@ -4,7 +4,6 @@ import {
   Typography,
   Paper,
   Container,
-  FormGroup,
   Box,
   IconButton,
   InputAdornment,
@@ -66,7 +65,7 @@ export default function ChangePIN() {
       alert("New PIN and Confirm PIN do not match.");
     } else if (!checkPin(uid, oldpin)) {
       alert("Old PIN is incorrect.");
-    } else if (newpin.length != 6) {
+    } else if (newpin.length !== 6) {
       alert("New PIN must be 6 digits.");
     } else {
       changePin(uid, oldpin, newpin).then((result) => {

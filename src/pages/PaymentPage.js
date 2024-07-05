@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Button, TextField, Typography, Container, Grid, Paper, Avatar, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, TextField, Typography, Container, Paper, Avatar, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { getBalance } from "../services/ProfileService";
 import { getUserByAccount } from "../services/UserService";
 import { pay } from "../services/PaymentService";

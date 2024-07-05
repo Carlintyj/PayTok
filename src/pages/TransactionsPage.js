@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Container, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import TransactionHistoryCard from "../components/TransactionHistoryCard";
 import { getTransactionsHistory } from "../services/PaymentService";
 
 export default function Transactions() {
   const [history, setHistory] = useState([]);
-  const navigate = useNavigate();
 
   const getuid = () => {
     const user = JSON.parse(localStorage.getItem("user"));

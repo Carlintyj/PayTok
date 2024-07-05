@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import { Button, Paper, Avatar, Typography, Container, Divider, Box } from "@mui/material";
+import { Button, Paper, Avatar, Typography, Container, Divider } from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SupportIcon from '@mui/icons-material/HelpOutline';
@@ -29,8 +29,6 @@ export default function Profile() {
       return user.picture;
     }
   };
-
-  const showWalletSettings = (JSON.parse(localStorage.getItem("user")).role === "agent");
 
   const navigate = useNavigate();
 

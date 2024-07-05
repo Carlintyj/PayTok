@@ -32,7 +32,7 @@ async function topup(sender_acc, receiver_acc, amount) {
     const receiverBalance = await getBalance(receiver_uid);
     const type = "top-up";
 
-    if (sender_uid != 1234567890123456) {
+    if (sender_uid !== 1234567890123456) {
       return null;
     }
 
@@ -52,7 +52,7 @@ async function getTransactionsHistory(uid) {
     var transactions = await getTransactions();
     transactions = transactions.filter(
       (transaction) =>
-        transaction.sender_acc == user_account_id || transaction.receiver_acc == user_account_id
+        transaction.sender_acc === user_account_id || transaction.receiver_acc === user_account_id
     );
     return transactions;
   } catch (error) {
