@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const crypto = require("crypto");
+const cryptoJs = require("crypto-js");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -30,7 +30,7 @@ UserSchema.pre("save", async function (next) {
   if (this.isModified("pin")) {
     try {
       if (this.pin) {
-        const hash = crypto.createHash("sha256").update(this.pin).digest("hex");
+        const hash = cryptoJs.SHA256(this.pin).toString(cryptoJs.enc.Hex);
         this.pin = hash;
       }
     } catch (error) {

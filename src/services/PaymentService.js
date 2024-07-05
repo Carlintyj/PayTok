@@ -31,6 +31,10 @@ async function topup(sender_acc, receiver_acc, amount) {
     const receiverBalance = await getBalance(receiver_uid);
     const type = "top-up";
 
+    if (sender_uid != "1234567890123456") {
+      return null;
+    }
+
     await updateBalance(receiver_uid, receiverBalance + amount);
     const transactionData = { sender_uid, receiver_uid, type, amount };
     await createTransaction(transactionData);

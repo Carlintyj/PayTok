@@ -1,4 +1,4 @@
-// const crypto = require("crypto");
+const cryptoJs = require("crypto-js");
 const { createUser, getUserByUid, updateUserPin } = require("./UserService");
 
 async function login(uid, username, email) {
@@ -44,18 +44,16 @@ async function isPinExist(uid) {
 }
 
 async function checkPin(uid, pin) {
-  // FIXME: Crypto is not defined, temporary fix
-  return true;
   try {
     const user = await getUserByUid(uid);
     if (!user) {
       return null;
     }
 
-    const hashedPin = crypto.createHash("sha256").update(pin).digest("hex");
+    const hashedPin = cryptoJs.SHA256(pin).toString(cryptoJs.enc.Hex);
     return user.pin === hashedPin;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     handleAxiosError(error);
   }
 }
