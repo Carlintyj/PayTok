@@ -25,6 +25,8 @@ export default function Profile() {
     }
   };
 
+  const showWalletSettings = (JSON.parse(localStorage.getItem("user")).role === "agent");
+
   const navigate = useNavigate();
 
   const handleAccountDetailsClick = () => {
@@ -106,14 +108,14 @@ export default function Profile() {
         fontSize: 20
       }}   
       >Account Details</Button>
-      <Button onClick={handleWalletSettingsClick}
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}  
-      >Wallet Settings</Button>
-      <Button onClick={handleSupportFAQClick}
+      {showWalletSettings && <Button onClick={handleWalletSettingsClick}
+        sx={{       
+          width: "100%",
+          color: "black",
+          fontSize: 20
+        }}  
+        >Wallet Settings</Button>}
+      <Button onClick={handleSupportFAQClick} 
       sx={{       
         width: "100%",
         color: "black",
