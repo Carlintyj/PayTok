@@ -2,7 +2,6 @@ import axios from "axios";
 
 // Example Axios instance configuration
 const api = axios.create({
-  // TODO: Change to https://paytok.onrender.com
   baseURL: "http://localhost:4000/api/users", // Adjust URL as per your API endpoint
   timeout: 5000, // Timeout after 5 seconds
 });

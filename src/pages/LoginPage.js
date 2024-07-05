@@ -9,7 +9,7 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import { login, checkPin, isPinExist } from "../services/ProfileService";
 import { updateUserPin } from "../services/UserService";
 import Modal from "@mui/material/Modal";
@@ -82,7 +82,18 @@ export default function LoginPage() {
     setOpenPinModal(true);
 
     // Store user info in localStorage
-    localStorage.setItem("user", JSON.stringify({ uid, email, name, account, role, picture, isAuth: false }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid,
+        email,
+        name,
+        account,
+        role,
+        picture,
+        isAuth: false,
+      })
+    );
 
     // Trigger storage event for other tabs/windows
     window.dispatchEvent(new Event("storage"));
@@ -90,21 +101,35 @@ export default function LoginPage() {
 
   const handleCreatePin = () => {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
-    updateUserPin(uid, enteredPin).then(() => {
-      setOpenPinModal(false);
-      localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: true }));
-    }).then(() => {
-      navigate("/home");
-      window.location.reload();
-    });
-  }
+    updateUserPin(uid, enteredPin)
+      .then(() => {
+        setOpenPinModal(false);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...JSON.parse(localStorage.getItem("user")),
+            isAuth: true,
+          })
+        );
+      })
+      .then(() => {
+        navigate("/home");
+        window.location.reload();
+      });
+  };
 
   const handleEnterPin = () => {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
     checkPin(uid, enteredPin).then((result) => {
       if (result) {
         setOpenPinModal(false);
-        localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: true }));
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...JSON.parse(localStorage.getItem("user")),
+            isAuth: true,
+          })
+        );
         navigate("/home");
         window.location.reload();
       } else {
@@ -112,7 +137,7 @@ export default function LoginPage() {
         setEnteredPin("");
       }
     });
-  }
+  };
 
   const handleKeypadClick = (key) => {
     if (key === "delete") {
@@ -192,12 +217,12 @@ export default function LoginPage() {
       >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 300,
-            bgcolor: 'background.paper',
+            bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
           }}
@@ -205,8 +230,21 @@ export default function LoginPage() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {isFirstLogin ? "Create PIN" : "Enter PIN"}
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-            <Box sx={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
               {[...Array(6)].map((_, index) => (
                 <Box
                   key={index}
@@ -214,7 +252,8 @@ export default function LoginPage() {
                     width: 24,
                     height: 24,
                     borderRadius: "50%",
-                    backgroundColor: enteredPin.length > index ? "#000" : "#ccc",
+                    backgroundColor:
+                      enteredPin.length > index ? "#000" : "#ccc",
                     margin: "0 4px",
                   }}
                 />
