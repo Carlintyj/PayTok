@@ -9,7 +9,7 @@ import Logo from "../assets/Logo.png";
 import background from "../assets/background.jpg";
 import Container from "@mui/material/Container";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
+import { jwtDecode } from "jwt-decode"; 
 import { login, checkPin, isPinExist } from "../services/ProfileService";
 import { updateUserPin } from "../services/UserService";
 import Modal from "@mui/material/Modal";
@@ -23,7 +23,7 @@ const Keypad = ({ onKeypadClick }) => {
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
-    [null, 0, "delete"],
+    ["", 0, "delete"],
   ];
 
   const handleKeypadClick = (key) => {
@@ -67,7 +67,6 @@ export default function LoginPage() {
   const defaultTheme = createTheme();
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [openPinModal, setOpenPinModal] = useState(false);
-  const [pin, setPin] = React.useState("");
   const [enteredPin, setEnteredPin] = React.useState("");
 
   const handleGoogleLoginSuccess = async (response) => {
@@ -91,7 +90,7 @@ export default function LoginPage() {
 
   const handleCreatePin = () => {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
-    updateUserPin(uid, pin).then(() => {
+    updateUserPin(uid, enteredPin).then(() => {
       setOpenPinModal(false);
       localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: true }));
     }).then(() => {

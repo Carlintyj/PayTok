@@ -27,11 +27,6 @@ const faqData = [
       "You can find detailed information about our terms of service and privacy policies within the app. Go to the Settings or Profile section and look for 'Terms and Policies' or a similar option. Click on it to read our full terms of service, privacy policy, and any other relevant policies.",
   },
   {
-    question: "How do I add a new card to my wallet?",
-    answer:
-      "To add a new card to your wallet, go to the Wallet Settings in the app. Look for an 'Add Card' or '+' button. Click on it and follow the prompts to enter your card details. Make sure to double-check all information before saving to ensure accuracy.",
-  },
-  {
     question: "How can I change my PIN?",
     answer:
       "To change your PIN, navigate to the Account Details section in the app. Look for an option labeled 'Change PIN' or 'Security Settings'. Click on this option and follow the instructions to verify your identity and set a new PIN. Remember to choose a PIN that's secure and not easily guessable.",

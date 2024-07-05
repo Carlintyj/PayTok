@@ -15,8 +15,17 @@ import SupportFAQ from "../pages/SupportFAQ";
 import Report from "../pages/Report";
 import Terms from "../pages/Terms";
 import ChangePIN from "../pages/ChangePIN";
+import { useState, useEffect } from "react";
 const AuthenticatedRoutes = () => {
-    const agent = false; // To be replaced with backend API
+
+    const [isAgent, setIsAgent] = useState(false);
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          setIsAgent(user.role == "agent");
+        }
+      }, []);
 
     return (
         <>
@@ -30,7 +39,7 @@ const AuthenticatedRoutes = () => {
                     <Route path="/unsuccessfulPayment" element={<UnsuccessfulPaymentPage />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/accountdetails" element={<AccountDetails />} />
-                    <Route path="/wallet" element={<WalletSettings />} />
+                    { isAgent ? <Route path="/wallet" element={<WalletSettings />} /> : null}
                     <Route path="/support" element={<SupportFAQ />} />
                     <Route path="/report" element={<Report />} />
                     <Route path="/terms" element={<Terms />} />
@@ -39,8 +48,7 @@ const AuthenticatedRoutes = () => {
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </div>
-            {agent ? <AgentNavbar /> : <UserNavbar />}
- main
+            {isAgent ? <AgentNavbar /> : <UserNavbar />}
         </>
     );
 };

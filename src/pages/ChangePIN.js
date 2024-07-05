@@ -19,11 +19,11 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 export default function ChangePIN() {
   const navigate = useNavigate();
 
-  const [account, setAccount] = useState("");
+  const [uid, setUID] = useState("");
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      setAccount(user.account);
+      setUID(user.uid);
     }
   }, []);
 
@@ -64,14 +64,21 @@ export default function ChangePIN() {
 
     if (newpin !== cnewpin) {
       alert("New PIN and Confirm PIN do not match.");
-    } else if (!checkPin(account, oldpin)) {
+    } else if (!checkPin(uid, oldpin)) {
       alert("Old PIN is incorrect.");
+    } else if (newpin.length != 6) {
+      alert("New PIN must be 6 digits.");
     } else {
-      changePin(account, oldpin, newpin);
-      alert("PIN changed successfully.");
-      setOldpin("");
-      setNewpin("");
-      setCnewpin("");
+      changePin(uid, oldpin, newpin).then((result) => {
+        if (result) {
+          alert("PIN changed successfully.");
+          setOldpin("");
+          setNewpin("");
+          setCnewpin("");
+        } else {
+          alert("Failed to change PIN. Please try again.");
+        }
+      });
     }
   };
 

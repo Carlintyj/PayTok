@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import { Button, Paper, Avatar, Typography, Container } from "@mui/material";
+import { Button, Paper, Avatar, Typography, Container, Divider, Box } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SupportIcon from '@mui/icons-material/HelpOutline';
+import ReportIcon from '@mui/icons-material/Report';
+import TermsIcon from '@mui/icons-material/Gavel';
 
 /**
  * A component for displaying profile page UI (User Profile/ Edit Profile/ Change Password/ Delete Account)
@@ -33,10 +38,6 @@ export default function Profile() {
     navigate("/accountdetails");
   };
 
-  const handleWalletSettingsClick = () => {
-    navigate("/wallet");
-  };
-
   const handleSupportFAQClick = () => {
     navigate("/support");
   };
@@ -52,13 +53,13 @@ export default function Profile() {
   const handleLogout = () => {
     // Log out from Google
     googleLogout();
-    
+
     // Remove user from localStorage
     localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: false }));
-    
+
     // Trigger storage event for other tabs/windows
     window.dispatchEvent(new Event("storage"));
-    
+
     // Navigate to login page
     window.location.reload();
     navigate("/");
@@ -66,7 +67,7 @@ export default function Profile() {
 
   return (
     <Container
-    maxWidth="sm"
+      maxWidth="sm"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -85,64 +86,108 @@ export default function Profile() {
           backgroundColor: "#55AD9B",
           padding: "20px",
           borderRadius: "10px",
+          marginBottom: "20px",
         }}
       >
-          <Avatar
+        <Avatar
           sx={{
             width: 100,
             height: 100,
             marginBottom: "10px",
           }}
           src={getImageURL()}
-        >
-        </Avatar>
-        <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
+        />
+        <Typography variant="h5" sx={{ marginBottom: "10px", color: "#fff" }}>
           {name}
         </Typography>
       </Paper>
 
-      <Button onClick={handleAccountDetailsClick}
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}   
-      >Account Details</Button>
-      {showWalletSettings && <Button onClick={handleWalletSettingsClick}
+      <Paper
+        sx={{
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: "10px",
+          boxShadow: 3,
+        }}
+      >
+        <Button 
+          onClick={handleAccountDetailsClick}
+          startIcon={<AccountCircleIcon />}
+          sx={{       
+            width: "100%",
+            color: "black",
+            fontSize: 20,
+            justifyContent: 'flex-start',
+            padding: '10px 20px',
+            borderBottom: '1px solid #ccc',
+            borderRadius: '10px 10px 0 0',
+          }}   
+        >
+          Account Details
+        </Button>
+        <Button 
+          onClick={handleSupportFAQClick}
+          startIcon={<SupportIcon />}
+          sx={{       
+            width: "100%",
+            color: "black",
+            fontSize: 20,
+            justifyContent: 'flex-start',
+            padding: '10px 20px',
+            borderBottom: '1px solid #ccc',
+          }}  
+        >
+          Support & FAQs
+        </Button>
+        <Button 
+          onClick={handleReportClick}
+          startIcon={<ReportIcon />}
+          sx={{       
+            width: "100%",
+            color: "black",
+            fontSize: 20,
+            justifyContent: 'flex-start',
+            padding: '10px 20px',
+            borderBottom: '1px solid #ccc',
+          }}  
+        >
+          Report an Issue
+        </Button>
+        <Button 
+          onClick={handleTermsClick}
+          startIcon={<TermsIcon />}
+          sx={{       
+            width: "100%",
+            color: "black",
+            fontSize: 20,
+            justifyContent: 'flex-start',
+            padding: '10px 20px',
+            borderRadius: '0 0 10px 10px',
+          }}  
+        >
+          Terms and Policies
+        </Button>
+      </Paper>
+      
+      <Divider sx={{ width: '100%', margin: '20px 0' }} />
+      
+      <Button 
+        onClick={handleLogout}
+        startIcon={<LogoutIcon />}
         sx={{       
           width: "100%",
-          color: "black",
-          fontSize: 20
+          color: "white",
+          backgroundColor: "#FF5252",
+          fontSize: 20,
+          justifyContent: 'flex-start',
+          padding: '10px 20px',
+          '&:hover': {
+            backgroundColor: "#FF1744",
+          },
         }}  
-        >Wallet Settings</Button>}
-      <Button onClick={handleSupportFAQClick} 
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}  
-      >Support & FAQs</Button>
-      <Button onClick={handleReportClick}
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}  >Report a problem</Button>
-      <Button onClick={handleTermsClick}
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}  
-      >Terms and Policies</Button>
-      <Button onClick={handleLogout}
-      sx={{       
-        width: "100%",
-        color: "black",
-        fontSize: 20
-      }}  
-      >Logout</Button>
+      >
+        Logout
+      </Button>
     </Container>
-    
   );
 }

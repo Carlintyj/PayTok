@@ -1,5 +1,6 @@
 const { getUserByAccount, updateUserBalance } = require("./UserService");
 const { getBalance } = require("./ProfileService");
+const { createTransaction, getTransactions } = require("./TransactionService");
 
 async function pay(sender_acc, receiver_acc, amount) {
   try {
@@ -26,16 +27,15 @@ async function pay(sender_acc, receiver_acc, amount) {
 
 async function topup(sender_acc, receiver_acc, amount) {
   try {
-    const sender_uid = await getUserByAccount(sender_acc);
-    const receiver_uid = await getUserByAccount(receiver_acc);
+    const { uid: sender_uid} = await getUserByAccount(sender_acc);
+    const { uid: receiver_uid} = await getUserByAccount(receiver_acc);
     const receiverBalance = await getBalance(receiver_uid);
     const type = "top-up";
 
-    if (sender_uid != "1234567890123456") {
+    if (sender_uid != 1234567890123456) {
       return null;
     }
-
-    await updateBalance(receiver_uid, receiverBalance + amount);
+    await updateUserBalance(receiver_uid, receiverBalance + amount);
     const transactionData = { sender_uid, receiver_uid, type, amount };
     await createTransaction(transactionData);
 

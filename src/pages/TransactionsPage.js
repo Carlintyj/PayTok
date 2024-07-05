@@ -35,7 +35,7 @@ export default function Transactions() {
           padding: "20px",
         }}
       >
-        <Typography variant="h5" gutterBottom sx={{ color: "#fff" }}>
+        <Typography variant="h5" sx={{ color: "#fff" }}>
           Transactions History
         </Typography>
       </Paper>

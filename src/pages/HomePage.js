@@ -4,16 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Payment, Storefront, QrCode, ContentCopy } from "@mui/icons-material";
 import TikTokLogo from "../assets/tiktok-store.jpg";
 import { getBalance } from "../services/ProfileService";
+import { set } from "mongoose";
 
 export default function HomePage() {
   const [name, setName] = useState("");
   const [balance, setBalance] = useState(0);
+  const [isAgent, setIsAgent] = useState(false);
 
   useEffect(() => {
     const fetchBalance = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setName(user.name);
+        setIsAgent(user.role === "agent");
         try {
           const balance = await getBalance(user.uid);
           setBalance(balance !== null ? balance : 0);
@@ -51,7 +54,7 @@ export default function HomePage() {
   };
 
   const handlePayMerchantClick = () => {
-    // Navigate to pay merchant route
+    navigate("/payment");
   };
 
   const handleQRCodeClick = () => {
@@ -88,7 +91,7 @@ export default function HomePage() {
         }}
       >
         <Typography variant="h5" sx={{ marginBottom: "10px", color: "#fff" }}>
-          Welcome back, {name}
+          Welcome back, {name} {isAgent ? "(Agent)" : ""}
         </Typography>
         <Box
           sx={{

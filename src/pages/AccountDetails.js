@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LockIcon from "@mui/icons-material/Lock";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { ContentCopy } from "@mui/icons-material";
 
 export default function AccountDetails() {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ export default function AccountDetails() {
       return user.picture;
     }
   };
+
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(user.account);
+    alert("Account number copied to clipboard!");
+  };
+
 
   const DetailItem = ({ label, value }) => (
     <Box sx={{ mb: 2 }}>
@@ -119,11 +126,15 @@ export default function AccountDetails() {
           ></Avatar>
         </Box>
         <Box sx={{ padding: "10px", width: "95%" }}>
-          <DetailItem label="Username" value={user.name} />
+          <DetailItem label="Name" value={user.name} />
           <DetailItem label="Role" value={user.role} />
-          <DetailItem label="Account Number" value={user.account} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <DetailItem label="Account Number" value={user.account} />
+            <IconButton onClick={handleCopyClick} sx={{ ml: -2 }}>
+              <ContentCopy sx={{ fontSize: "16px" }} />
+            </IconButton>
+          </Box>
           <DetailItem label="Email" value={user.email} />
-          <DetailItem label="PIN" value="••••••" />
 
           <Button
             variant="contained"

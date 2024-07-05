@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Typography,
   Paper,
   Container,
-  FormGroup,
   TextField,
   Box,
-  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CreditCard } from "@mui/icons-material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import  { topup } from "../services/PaymentService"; 
 
 export default function WalletSettings() {
-  const navigate = useNavigate();
 
   const [card, setCard] = useState("");
   const [exp, setExp] = useState("");
   const [cvv, setCvv] = useState("");
+  const [account, setAccount] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setAccount(user.account);
+    }
+  }, []);
 
   const handleCardChange = (event) => {
     const value = event.target.value.replace(/\D/g, ""); // Only allow numbers
@@ -33,12 +38,7 @@ export default function WalletSettings() {
   };
 
   const handleExpChange = (event) => {
-    const value = event.target.value.replace(/\D/g, ""); // Only allow numbers
-    let formattedValue = value;
-    if (value.length > 2) {
-      formattedValue = `${value.slice(0, 2)}/${value.slice(2)}`;
-    }
-    setExp(formattedValue.slice(0, 5)); // Limit to MM/YY format
+    setExp(event.target.value);
   };
 
   const handleCvvChange = (event) => {
@@ -48,11 +48,14 @@ export default function WalletSettings() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add card logic here
-  };
-
-  const handleBackClick = () => {
-    navigate("/profile");
+    //TODO: Add card logic here
+    topup(8268014734, account, 1000).then((response) => {
+      if (response) {
+        alert("Top up successful!");
+      } else {
+        alert("Top up failed!");
+      }
+    });
   };
 
   return (
@@ -85,14 +88,8 @@ export default function WalletSettings() {
             alignItems: "center",
           }}
         >
-          <IconButton
-            onClick={handleBackClick}
-            sx={{ color: "#fff", marginRight: 2 }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
           <Typography variant="h5" sx={{ color: "#fff", flexGrow: 1 }}>
-            Wallet Settings
+            Top Up with Credit Card
           </Typography>
         </Box>
 
@@ -157,7 +154,7 @@ export default function WalletSettings() {
               },
             }}
           >
-            Add Card
+            Top Up
           </Button>
         </Box>
       </Paper>
