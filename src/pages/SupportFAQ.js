@@ -1,43 +1,152 @@
 import * as React from "react";
-import { Button, Typography, Paper, Container } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Paper,
+  Container,
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  IconButton,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
-export default function SupportFAQ() {
-    const navigate = useNavigate();
+const faqData = [
+  {
+    question: "How do I sign in to the app?",
+    answer:
+      "We use Google Sign-In for authentication. Simply click on the 'Sign in with Google' button on the login page and follow the prompts to sign in using your Google account. If you don't have a Google account, you'll need to create one first.",
+  },
+  {
+    question:
+      "Where can I find information about the app's terms and policies?",
+    answer:
+      "You can find detailed information about our terms of service and privacy policies within the app. Go to the Settings or Profile section and look for 'Terms and Policies' or a similar option. Click on it to read our full terms of service, privacy policy, and any other relevant policies.",
+  },
+  {
+    question: "How do I add a new card to my wallet?",
+    answer:
+      "To add a new card to your wallet, go to the Wallet Settings in the app. Look for an 'Add Card' or '+' button. Click on it and follow the prompts to enter your card details. Make sure to double-check all information before saving to ensure accuracy.",
+  },
+  {
+    question: "How can I change my PIN?",
+    answer:
+      "To change your PIN, navigate to the Account Details section in the app. Look for an option labeled 'Change PIN' or 'Security Settings'. Click on this option and follow the instructions to verify your identity and set a new PIN. Remember to choose a PIN that's secure and not easily guessable.",
+  },
+  {
+    question: "How can I get help or report an issue?",
+    answer:
+      "If you need assistance or want to report a problem:\n\n" +
+      "1. Use the 'Report an Issue' feature: Go to your Profile page and select 'Report an Issue'. Describe your problem or question in detail.\n\n" +
+      "2. For urgent matters: You can email us directly at support@PayTok.com.\n\n" +
+      "We aim to respond to all inquiries within 24 hours. Our team will review your submission and get back to you as soon as possible to address your concerns or answer your questions.",
+  },
+];
 
-    const handleBackClick = () => {
-      navigate("/profile");
-    };
-  
-    return (
-      <Container
+export default function SupportFAQ() {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate("/profile");
+  };
+
+  return (
+    <Container
       maxWidth="sm"
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F1F8E8",
+        padding: "20px",
       }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: "10px",
+          overflow: "hidden",
+          marginBottom: "20px",
+        }}
       >
-            <Paper
-            sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
+        <Box
+          sx={{
             backgroundColor: "#55AD9B",
-            padding: "20px",
-            borderRadius: "10px",
-            }}
+            padding: "15px 20px",
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-            <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
-            SupportFAQ
-            </Typography>
-        </Paper>
-        <Button onClick={handleBackClick}>Back</Button>
-        
-      </Container>
-    );
+          <IconButton
+            onClick={handleBackClick}
+            sx={{ color: "#fff", marginRight: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" sx={{ color: "#fff", flexGrow: 1 }}>
+            Support & FAQ
+          </Typography>
+        </Box>
+
+        <Box sx={{ padding: "20px" }}>
+          {faqData.map((faq, index) => (
+            <Accordion
+              key={index}
+              elevation={0}
+              sx={{
+                "&:before": { display: "none" },
+                borderBottom: "1px solid #e0e0e0",
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "#55AD9B" }} />}
+                aria-controls={`panel${index}a-content`}
+                id={`panel${index}a-header`}
+                sx={{
+                  "&.Mui-expanded": {
+                    minHeight: 48,
+                    margin: "12px 0",
+                  },
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold", color: "#333" }}>
+                  {faq.question}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body2" sx={{ color: "#555" }}>
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Paper>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignSelf: "flex-start",
+          width: "100%",
+        }}
+      >
+        <Typography variant="h6" gutterBottom sx={{ color: "#333" }}>
+          Still need help?
+        </Typography>
+        <Typography variant="body1" gutterBottom sx={{ color: "#555" }}>
+          If you couldn't find the answer to your question, please contact our
+          support team at{" "}
+          <a href="mailto:support@PayTok.com" style={{ color: "#55AD9B" }}>
+            support@PayTok.com
+          </a>
+        </Typography>
+      </Box>
+    </Container>
+  );
 }

@@ -1,60 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Paper, Container} from "@mui/material";
+import {
+  Button,
+  Typography,
+  Paper,
+  Container,
+  Box,
+  Divider,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import LockIcon from "@mui/icons-material/Lock";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function AccountDetails() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({});
 
-    const handleBackClick = () => {
-      navigate("/profile");
-    };
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
 
-    const [name, setName] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setName(user.name);
-      }
-    }, []);
+  const handleBackClick = () => {
+    navigate("/profile");
+  };
 
-    const [account, setAccount] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setAccount(user.account);
-      }
-    }, []);
+  const handleChangePINClick = () => {
+    navigate("/changepin");
+  };
 
-    const [email, setEmail] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setEmail(user.email);
-      }
-    }, []);
+  const getImageURL = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      return user.picture;
+    }
+  };
 
-    const [role, setRole] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setRole(user.role);
-      }
-    }, []);
+  const DetailItem = ({ label, value }) => (
+    <Box sx={{ mb: 2 }}>
+      <Typography
+        variant="subtitle2"
+        color="textSecondary"
+        sx={{ fontWeight: "bold" }}
+      >
+        {label}
+      </Typography>
+      <Typography variant="body1">{value}</Typography>
+      <Divider sx={{ mt: 1 }} />
+    </Box>
+  );
 
-    const [pin, setPin] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setPin(user.role);
-      }
-    }, []);
-
-    const handleChangePINClick = () => {
-      navigate("/changepin");
-    };
-  
-    return (
-      <Container
+  return (
+    <Container
       maxWidth="sm"
       sx={{
         display: "flex",
@@ -62,50 +62,85 @@ export default function AccountDetails() {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F1F8E8",
+        padding: "20px",
       }}
+    >
+      <Paper
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: "10px",
+          overflow: "hidden",
+          boxShadow: 3,
+        }}
       >
-            <Paper
-            sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
+        <Box
+          sx={{
             width: "100%",
             backgroundColor: "#55AD9B",
             padding: "20px",
-            borderRadius: "10px",
-            }}
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-            <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
-            Account Details
-            </Typography>
-        </Paper>
-        
-        <Typography variant="h5" align='left' >
-          <strong> Username: </strong> {name}
-        </Typography>
-        <Typography variant="h5" align='left' >
-          <strong> Role: </strong> {role}
-        </Typography>
-        <Typography variant="h5" align='left' >
-          <strong> Account Number: </strong> {account}
-        </Typography>
-        <Typography variant="h5" align='left' >
-          <strong> Email: </strong> {email}
-        </Typography>
-        <Typography variant="h5" align='left' >
-          <strong> PIN: </strong> {pin}
-        </Typography>
+          <IconButton
+            onClick={handleBackClick}
+            sx={{ color: "#fff", marginRight: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ color: "#fff", flexGrow: 1 }}
+          >
+            <strong>Account Details</strong>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            marginTop: "20px",
+            width: "95%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar
+            sx={{
+              width: 100,
+              height: 100,
+              marginBottom: "10px",
+            }}
+            src={getImageURL()}
+          ></Avatar>
+        </Box>
+        <Box sx={{ padding: "10px", width: "95%" }}>
+          <DetailItem label="Username" value={user.name} />
+          <DetailItem label="Role" value={user.role} />
+          <DetailItem label="Account Number" value={user.account} />
+          <DetailItem label="Email" value={user.email} />
+          <DetailItem label="PIN" value="••••••" />
 
-        <Button onClick={handleChangePINClick}
-        sx={{       
-          width: "100%",
-          color: "black",
-          fontSize: 20
-        }}  
-        >Change PIN</Button>
-        
-        <Button onClick={handleBackClick}>Back</Button>
-      </Container>
-    );
+          <Button
+            variant="contained"
+            startIcon={<LockIcon />}
+            onClick={handleChangePINClick}
+            sx={{
+              mt: 1,
+              backgroundColor: "#55AD9B",
+              "&:hover": {
+                backgroundColor: "#458B7B",
+              },
+            }}
+          >
+            Change PIN
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
+  );
 }
