@@ -1,59 +1,82 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Paper, Container, FormGroup } from "@mui/material";
-import TextField from '@mui/material/TextField';
+import {
+  Button,
+  Typography,
+  Paper,
+  Container,
+  FormGroup,
+  Box,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { checkPin, changePin } from "../services/ProfileService";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function ChangePIN() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [account, setAccount] = useState("");
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setAccount(user.account);
-      }
-    }, []);
+  const [account, setAccount] = useState("");
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setAccount(user.account);
+    }
+  }, []);
 
-    const [oldpin, setOldpin] = useState("");
-    const [newpin, setNewpin] = useState("");
-    const [cnewpin, setCnewpin] = useState("");
+  const [oldpin, setOldpin] = useState("");
+  const [newpin, setNewpin] = useState("");
+  const [cnewpin, setCnewpin] = useState("");
+  const [showOldPin, setShowOldPin] = useState(false);
+  const [showNewPin, setShowNewPin] = useState(false);
+  const [showCnewPin, setShowCnewPin] = useState(false);
 
-    const handleOldChange = () => {
-        setOldpin(oldpin)
-    };
+  const handleOldChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "");
+    if (value.length <= 6) {
+      setOldpin(value);
+    }
+  };
 
-    const handleNewChange = () => {
-        setNewpin(newpin)
-    };
+  const handleNewChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "");
+    if (value.length <= 6) {
+      setNewpin(value);
+    }
+  };
 
-    const handleCnewChange = () => {
-        setCnewpin(cnewpin)
-    };
+  const handleCnewChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "");
+    if (value.length <= 6) {
+      setCnewpin(value);
+    }
+  };
 
-    const handleBackClick = () => {
-      navigate("/accountdetails");
-    };
+  const handleBackClick = () => {
+    navigate("/accountdetails");
+  };
 
-        
-    const handleSubmit = () => {
-        
-        if(newpin!==cnewpin){
-            return <Typography>not same</Typography>
-        }
-        else if (!checkPin(account, oldpin)){
-            return <Typography>not old</Typography>
-        }
-        else{
-            changePin(account, oldpin, newpin)
-            return <Typography>ok</Typography>
-        }
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  
-    return (
-      <Container
+    if (newpin !== cnewpin) {
+      alert("New PIN and Confirm PIN do not match.");
+    } else if (!checkPin(account, oldpin)) {
+      alert("Old PIN is incorrect.");
+    } else {
+      changePin(account, oldpin, newpin);
+      alert("PIN changed successfully.");
+      setOldpin("");
+      setNewpin("");
+      setCnewpin("");
+    }
+  };
+
+  return (
+    <Container
       maxWidth="sm"
       sx={{
         display: "flex",
@@ -61,65 +84,127 @@ export default function ChangePIN() {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#F1F8E8",
+        padding: "20px",
       }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: "10px",
+          overflow: "hidden",
+          marginBottom: "20px",
+        }}
       >
-            <Paper
-            sx={{
+        <Box
+          sx={{
+            backgroundColor: "#55AD9B",
+            padding: "15px 20px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            onClick={handleBackClick}
+            sx={{ color: "#fff", marginRight: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" sx={{ color: "#fff", flexGrow: 1 }}>
+            Change PIN
+          </Typography>
+        </Box>
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            padding: "20px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            backgroundColor: "#55AD9B",
-            padding: "20px",
-            borderRadius: "10px",
-            }}
+            gap: "20px",
+          }}
         >
-            <Typography variant="h5" gutterBottom sx={{ marginBottom: "10px", color: "#fff" }}>
+          <TextField
+            onChange={handleOldChange}
+            required
+            label="Old PIN"
+            value={oldpin}
+            variant="outlined"
+            type={showOldPin ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowOldPin(!showOldPin)}
+                    edge="end"
+                  >
+                    {showOldPin ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            onChange={handleNewChange}
+            required
+            label="New PIN"
+            value={newpin}
+            variant="outlined"
+            type={showNewPin ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowNewPin(!showNewPin)}
+                    edge="end"
+                  >
+                    {showNewPin ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            onChange={handleCnewChange}
+            required
+            label="Confirm New PIN"
+            value={cnewpin}
+            variant="outlined"
+            type={showCnewPin ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowCnewPin(!showCnewPin)}
+                    edge="end"
+                  >
+                    {showCnewPin ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: "#55AD9B",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#458B7B",
+              },
+            }}
+          >
             Change PIN
-            </Typography>
-        </Paper>
-        
-        <form onSubmit={handleSubmit}>
-            <FormGroup>
-                <TextField onChange={handleOldChange}
-                required
-                label="Old PIN"
-                defaultValue={oldpin}
-                sx={{margin:"10px"}}
-                />
-            
-            </FormGroup>
-
-            <FormGroup>
-                <TextField onChange={handleNewChange}
-                required
-                label="New PIN"
-                defaultValue={newpin}
-                sx={{margin:"10px"}}
-                />
-            </FormGroup>
-            
-            <FormGroup>
-                <TextField onChange={handleCnewChange}
-                required
-                label="Confirm New Pin"
-                defaultValue={cnewpin}
-                sx={{margin:"10px"}}
-                />
-            </FormGroup>
-            
-            <FormGroup>
-                <Button type="submit"
-                sx={{margin:"10px"}}>Change PIN</Button>
-            </FormGroup>
-            
-
-        </form>
-        
-
-        <Button onClick={handleBackClick}>Back</Button>
-        
-      </Container>
-    );
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
+  );
 }
