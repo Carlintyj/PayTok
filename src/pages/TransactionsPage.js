@@ -54,6 +54,13 @@ export default function Transactions() {
           Transactions History
         </Typography>
       </Paper>
+      {history.length === 0 && (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
+        <Typography variant="h6" sx={{ color: "black" }}>
+          No transaction history found
+        </Typography>
+      </div>
+      )}
       {history.map((transaction) => (
         <TransactionHistoryCard
           key={transaction.transactionId}

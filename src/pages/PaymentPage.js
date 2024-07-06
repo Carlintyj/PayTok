@@ -259,7 +259,9 @@ export default function PaymentPage() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <UnsuccessfulPaymentPage amount={amount} recipientName={recipientName}/>
+        <Box>
+          <UnsuccessfulPaymentPage amount={amount} recipientName={recipientName} />
+        </Box>
       </Modal>
       <Modal
         open={openSuccessModal}
@@ -267,7 +269,9 @@ export default function PaymentPage() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <SuccessfulPaymentPage amount={amount} recipientName={recipientName}/>
+        <Box>
+          <SuccessfulPaymentPage amount={amount} recipientName={recipientName} />
+        </Box>
       </Modal>
     </Container>
   );

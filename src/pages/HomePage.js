@@ -57,7 +57,7 @@ export default function HomePage() {
   };
 
   const handleQRCodeClick = () => {
-    // Navigate to QR code generation route
+    alert("QR Code feature is not available yet");
   };
 
   const handleTikTokStoreClick = () => {
