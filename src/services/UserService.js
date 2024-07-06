@@ -6,6 +6,16 @@ const api = axios.create({
   timeout: 5000, // Timeout after 5 seconds
 });
 
+api.interceptors.request.use(
+  (config) => {
+    config.headers["x-api-key"] = process.env.API_KEY; // Add your API key here
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Function to get all users
 async function getUsers() {
   try {
