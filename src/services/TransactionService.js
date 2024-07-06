@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Example Axios instance configuration
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL + "/api/users", // Adjust URL as per your API endpoint
+  baseURL: process.env.REACT_APP_BASE_URL + "/api/transactions", // Adjust URL as per your API endpoint
   timeout: 5000, // Timeout after 5 seconds
 });
 
