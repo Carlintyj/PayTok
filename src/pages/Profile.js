@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import { Button, Paper, Avatar, Typography, Container, Divider } from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SupportIcon from '@mui/icons-material/HelpOutline';
-import ReportIcon from '@mui/icons-material/Report';
-import TermsIcon from '@mui/icons-material/Gavel';
+import {
+  Button,
+  Paper,
+  Avatar,
+  Typography,
+  Container,
+  Divider,
+} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SupportIcon from "@mui/icons-material/HelpOutline";
+import ReportIcon from "@mui/icons-material/Report";
+import TermsIcon from "@mui/icons-material/Gavel";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 /**
  * A component for displaying profile page UI (User Profile/ Edit Profile/ Change Password/ Delete Account)
@@ -15,11 +23,13 @@ import TermsIcon from '@mui/icons-material/Gavel';
  */
 export default function Profile() {
   const [name, setName] = useState("");
+  const [isAgent, setIsAgent] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setName(user.name);
+      setIsAgent(user.role === "agent");
     }
   }, []);
 
@@ -48,12 +58,22 @@ export default function Profile() {
     navigate("/terms");
   };
 
+  const handleAgentSignUpClick = () => {
+    navigate("/agentsignup");
+  };
+
   const handleLogout = () => {
     // Log out from Google
     googleLogout();
 
     // Remove user from localStorage
-    localStorage.setItem("user", JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), isAuth: false }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("user")),
+        isAuth: false,
+      })
+    );
 
     // Trigger storage event for other tabs/windows
     window.dispatchEvent(new Event("storage"));
@@ -107,81 +127,97 @@ export default function Profile() {
           boxShadow: 3,
         }}
       >
-        <Button 
+        <Button
           onClick={handleAccountDetailsClick}
           startIcon={<AccountCircleIcon />}
-          sx={{       
+          sx={{
             width: "100%",
             color: "black",
             fontSize: 20,
-            justifyContent: 'flex-start',
-            padding: '10px 20px',
-            borderBottom: '1px solid #ccc',
-            borderRadius: '10px 10px 0 0',
-          }}   
+            justifyContent: "flex-start",
+            padding: "10px 20px",
+            borderBottom: "1px solid #ccc",
+            borderRadius: "10px 10px 0 0",
+          }}
         >
           Account Details
         </Button>
-        <Button 
+        <Button
           onClick={handleSupportFAQClick}
           startIcon={<SupportIcon />}
-          sx={{       
+          sx={{
             width: "100%",
             color: "black",
             fontSize: 20,
-            justifyContent: 'flex-start',
-            padding: '10px 20px',
-            borderBottom: '1px solid #ccc',
-          }}  
+            justifyContent: "flex-start",
+            padding: "10px 20px",
+            borderBottom: "1px solid #ccc",
+          }}
         >
           Support & FAQs
         </Button>
-        <Button 
+        <Button
           onClick={handleReportClick}
           startIcon={<ReportIcon />}
-          sx={{       
+          sx={{
             width: "100%",
             color: "black",
             fontSize: 20,
-            justifyContent: 'flex-start',
-            padding: '10px 20px',
-            borderBottom: '1px solid #ccc',
-          }}  
+            justifyContent: "flex-start",
+            padding: "10px 20px",
+            borderBottom: "1px solid #ccc",
+          }}
         >
           Report an Issue
         </Button>
-        <Button 
+        <Button
           onClick={handleTermsClick}
           startIcon={<TermsIcon />}
-          sx={{       
+          sx={{
             width: "100%",
             color: "black",
             fontSize: 20,
-            justifyContent: 'flex-start',
-            padding: '10px 20px',
-            borderRadius: '0 0 10px 10px',
-          }}  
+            justifyContent: "flex-start",
+            padding: "10px 20px",
+            borderRadius: "0 0 10px 10px",
+          }}
         >
           Terms and Policies
         </Button>
+        {!isAgent && (
+          <Button
+            onClick={handleAgentSignUpClick}
+            startIcon={<SupervisorAccountIcon />}
+            sx={{
+              width: "100%",
+              color: "black",
+              fontSize: 20,
+              justifyContent: "flex-start",
+              padding: "10px 20px",
+              borderRadius: "0 0 10px 10px",
+            }}
+          >
+            Sign Up as Agent
+          </Button>
+        )}
       </Paper>
-      
-      <Divider sx={{ width: '100%', margin: '20px 0' }} />
-      
-      <Button 
+
+      <Divider sx={{ width: "100%", margin: "20px 0" }} />
+
+      <Button
         onClick={handleLogout}
         startIcon={<LogoutIcon />}
-        sx={{       
+        sx={{
           width: "100%",
           color: "white",
           backgroundColor: "#FF5252",
           fontSize: 20,
-          justifyContent: 'flex-start',
-          padding: '10px 20px',
-          '&:hover': {
+          justifyContent: "flex-start",
+          padding: "10px 20px",
+          "&:hover": {
             backgroundColor: "#FF1744",
           },
-        }}  
+        }}
       >
         Logout
       </Button>
