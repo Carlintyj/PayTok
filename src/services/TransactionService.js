@@ -2,13 +2,13 @@ import axios from "axios";
 
 // Example Axios instance configuration
 const api = axios.create({
-  baseURL: "http://localhost:4000/api/transactions", // Adjust URL as per your API endpoint
+  baseURL: process.env.REACT_APP_BASE_URL + "/api/users", // Adjust URL as per your API endpoint
   timeout: 5000, // Timeout after 5 seconds
 });
 
 api.interceptors.request.use(
   (config) => {
-    config.headers["x-api-key"] = process.env.API_KEY; // Add your API key here
+    config.headers["x-api-key"] = process.env.REACT_APP_API_KEY; // Add your API key here
     return config;
   },
   (error) => {
