@@ -179,7 +179,7 @@ export default function Profile() {
             fontSize: 20,
             justifyContent: "flex-start",
             padding: "10px 20px",
-            borderRadius: "0 0 10px 10px",
+            borderBottom: "1px solid #ccc",
           }}
         >
           Terms and Policies
