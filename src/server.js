@@ -7,9 +7,20 @@ const cors = require("cors");
 const app = express();
 const PORT = 4000;
 
+// Authentication
+const checkApiKey = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (!apiKey || apiKey != process.env.API_KEY) {
+    return res.status(401).json("Forbidden");
+  }
+
+  next();
+};
+
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+app.use(checkApiKey);
 
 // MongoDB Connection
 const uri = process.env.MONGODB_URI;
