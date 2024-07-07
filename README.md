@@ -6,6 +6,13 @@ PayTok leverages agent networks and cash-in/cash-out points, users can deposit a
 
 **Disclaimer**: Paytok is a web app designed for **mobile view**.
 
+## Contributors
+- [@carlintyj](https://github.com/Carlintyj)
+- [@jonyxzx](https://github.com/Jonyxzx)
+- [@shunpingong](https://github.com/shunpingong)
+- [@aaronlim2001](https://github.com/AaronLim2001)
+- [@yiheng27](https://github.com/yiheng27)
+
 ## Inspiration
 Paytok is inspired by prepaid services such as gift cards and prepaid sim.
 
@@ -13,7 +20,6 @@ Paytok is inspired by prepaid services such as gift cards and prepaid sim.
 PayTok is a digital payment platform to offer customers the option to pay cashless without requiring a debit or credit card. PayTok acts as a 'bank account' where users 'deposit' money into the app via agents. An agent can deposit money into their account either by connecting to their bank account or by depositing cash from another agent. An agent is then able to sell top-up services to other users by transferring money from the agent to user's account and the user pays by cash.
 
 ## How We Built It
-
 Our project was developed using a combination of React and Node.js, with the Google Gmail OAuth API integrated for a seamless login experience.
 
 ### Frontend
