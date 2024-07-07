@@ -10,10 +10,10 @@ import UnsuccessfulPaymentPage from "./UnsuccessfulPaymentPage";
 
 export default function PaymentPage() {
   const [name, setName] = useState("");
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [recipientId, setRecipientId] = useState("");
-  const [amount, setAmount] = useState("");
+  const [recipientId, setRecipientId] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [recipientName, setRecipientName] = useState("No User Found");
   const [open, setOpen] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
 import PublicRoutes from "./routes/PublicRoutes";

@@ -1,17 +1,13 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import NotFoundImage from "../assets/Logo.png"; 
 
 const theme = createTheme();
 
 export default function NotFoundPage() {
-  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={theme}>
