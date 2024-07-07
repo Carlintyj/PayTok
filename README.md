@@ -65,3 +65,14 @@ One of the significant challenges we faced was not fully understanding the domai
 ## What's next for PayTok
 We hope that PayTok will be deployed into TikTok as an actual service to be used worldwide and reach parts of the world where bank accounts are uncommon. We hope that through PayTok, the TikTok community will grow via the continued engagement of users through transactions.
 Subsequently, we hope to expand our services to other companies.
+
+# Screenshots of PayTok
+
+![IMG_6697](https://github.com/Carlintyj/PayTok/assets/102083899/58d6bc5f-9771-419d-a92f-2c561d759098)
+![IMG_6699](https://github.com/Carlintyj/PayTok/assets/102083899/21173bf6-912c-4b56-9cd7-a94641128adf)
+![IMG_6701](https://github.com/Carlintyj/PayTok/assets/102083899/b511903a-4a5e-44e1-aaed-75aa9e3b1c31)
+![IMG_6704](https://github.com/Carlintyj/PayTok/assets/102083899/80696406-7702-487b-8bf2-c9fdfae8e913)
+![IMG_6700](https://github.com/Carlintyj/PayTok/assets/102083899/d9bfe552-c525-4e37-b60c-10006f75521f)
+![IMG_6702](https://github.com/Carlintyj/PayTok/assets/102083899/4e2b2552-3b00-4d77-b33e-cc444e4d863f)
+![IMG_6703](https://github.com/Carlintyj/PayTok/assets/102083899/ec31a087-b9b0-472c-b3bc-557daf93af1f)
+
