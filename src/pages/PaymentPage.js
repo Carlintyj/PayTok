@@ -222,7 +222,7 @@ export default function PaymentPage() {
         </Typography>
       </Paper>
 
-      <Box sx={{ flexGrow: 0.70 }} />
+      <Box sx={{ flexGrow: 0.40 }} />
 
       <Button
         type="submit"
