@@ -2,8 +2,6 @@
 
 # 2024 TikTok TechJamBy Hackathon
 
-**Disclaimer**: Paytok is a web app designed for **mobile view**.
-
 PayTok leverages agent networks and cash-in/cash-out points, users can deposit and withdraw money from their digital wallets using physical locations such as retail stores, kiosks, and partner agents.
 
 **Disclaimer**: Paytok is a web app designed for **mobile view**.
