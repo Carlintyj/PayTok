@@ -9,10 +9,7 @@ const UserSchema = new Schema({
   pin: { type: String },
   role: { type: String, enum: ["user", "agent"], default: "user" },
   account: { type: Number, unique: true },
-  balance: {
-    type: mongoose.Types.Decimal128,
-    default: mongoose.Types.Decimal128.fromString("0.00"),
-  },
+  balance: { type: Number, default: 0.0 },
 });
 
 async function generateUniqueAccountNumber() {
