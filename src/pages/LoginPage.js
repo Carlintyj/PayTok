@@ -13,10 +13,10 @@ import { jwtDecode } from "jwt-decode";
 import { login, checkPin, isPinExist } from "../services/ProfileService";
 import { updateUserPin } from "../services/UserService";
 import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen"; // Added unlock icon
 
 const Keypad = ({ onKeypadClick }) => {
   const keypadLayout = [
@@ -39,19 +39,22 @@ const Keypad = ({ onKeypadClick }) => {
               <Paper
                 variant="outlined"
                 sx={{
-                  width: 50,
-                  height: 50,
+                  width: 70,
+                  height: 70,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   cursor: "pointer",
+                  backgroundColor: "#f7f7f7",
+                  border: "1px solid #ddd",
+                  borderRadius: "50%", // Make the button circular
                 }}
                 onClick={() => handleKeypadClick(key)}
               >
                 {key === "delete" ? (
-                  <Typography variant="body1">←</Typography>
+                  <Typography variant="h6">←</Typography>
                 ) : (
-                  <Typography variant="body1">{key}</Typography>
+                  <Typography variant="h6">{key}</Typography>
                 )}
               </Paper>
             </Grid>
@@ -68,7 +71,8 @@ export default function LoginPage() {
   const defaultTheme = createTheme();
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [openPinModal, setOpenPinModal] = useState(false);
-  const [enteredPin, setEnteredPin] = React.useState("");
+  const [enteredPin, setEnteredPin] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(false); // State for unlock animation
 
   const handleGoogleLoginSuccess = async (response) => {
     const decoded = jwtDecode(response.credential);
@@ -100,51 +104,56 @@ export default function LoginPage() {
     window.dispatchEvent(new Event("storage"));
   };
 
-  const handleCreatePin = () => {
+  const handleCreatePin = async (pin) => {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
-    updateUserPin(uid, enteredPin)
-      .then(() => {
-        setOpenPinModal(false);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...JSON.parse(localStorage.getItem("user")),
-            isAuth: true,
-          })
-        );
+    await updateUserPin(uid, pin);
+    setOpenPinModal(false);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("user")),
+        isAuth: true,
       })
-      .then(() => {
-        navigate("/home");
-        window.location.reload();
-      });
+    );
+    navigate("/home");
+    window.location.reload();
   };
 
-  const handleEnterPin = () => {
+  const handleEnterPin = async (pin) => {
     const uid = JSON.parse(localStorage.getItem("user")).uid;
-    checkPin(uid, enteredPin).then((result) => {
-      if (result) {
-        setOpenPinModal(false);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...JSON.parse(localStorage.getItem("user")),
-            isAuth: true,
-          })
-        );
+    const result = await checkPin(uid, pin);
+    if (result) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("user")),
+          isAuth: true,
+        })
+      );
+      setIsUnlocked(true); // Trigger unlock animation
+      setTimeout(() => {
         navigate("/home");
         window.location.reload();
-      } else {
-        setError("Incorrect PIN. Please try again.");
-        setEnteredPin("");
-      }
-    });
+      }, 1000); // Reset unlock after 1 second
+    } else {
+      setError("Incorrect PIN. Please try again.");
+      setEnteredPin("");
+    }
   };
 
   const handleKeypadClick = (key) => {
     if (key === "delete") {
       setEnteredPin(enteredPin.slice(0, -1));
     } else if (enteredPin.length < 6) {
-      setEnteredPin(enteredPin + key);
+      const newPin = enteredPin + key;
+      setEnteredPin(newPin);
+      if (newPin.length === 6) {
+        if (isFirstLogin) {
+          handleCreatePin(newPin);
+        } else {
+          handleEnterPin(newPin);
+        }
+      }
     }
   };
 
@@ -219,64 +228,74 @@ export default function LoginPage() {
         <Box
           sx={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "70%",
-            bgcolor: "background.paper",
-            boxShadow: 24,
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            bgcolor: "rgba(0, 0, 0, 0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             p: 4,
           }}
         >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {isFirstLogin ? "Create PIN" : "Enter PIN"}
-          </Typography>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
+              width: "100%",
+              bgcolor: "white",
+              borderRadius: 4,
+              boxShadow: 3,
+              p: 3,
+              textAlign: "center",
             }}
           >
+            {isUnlocked ? (
+              <LockOpenIcon sx={{ fontSize: 60, color: "#4caf50", mb: 2 }} /> // Unlock animation
+            ) : (
+              <LockIcon sx={{ fontSize: 60, color: "#3f51b5", mb: 2 }} />
+            )}
+            <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+              {isFirstLogin ? "Create PIN" : "Enter PIN"}
+            </Typography>
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "center",
                 alignItems: "center",
-                marginBottom: "20px",
+                flexDirection: "column",
               }}
             >
-              {[...Array(6)].map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    backgroundColor:
-                      enteredPin.length > index ? "#000" : "#ccc",
-                    margin: "0 4px",
-                  }}
-                />
-              ))}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                {[...Array(6)].map((_, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: "50%",
+                      backgroundColor:
+                        enteredPin.length > index ? "#000" : "#ccc",
+                      margin: "0 8px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontSize: 20 }}>
+                      {enteredPin.length > index ? "•" : ""}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+              <Typography variant="body2" color="error" marginBottom={"10px"}>{error}</Typography>
+              <Keypad onKeypadClick={handleKeypadClick} />
             </Box>
-            <TextField
-              label="PIN"
-              type="password"
-              value={enteredPin}
-              InputProps={{ disableUnderline: true }}
-              sx={{ width: "100%", textAlign: "center", marginBottom: "10px" }}
-            />
-            <Typography variant="body2" color="error" marginBottom={"10px"}>{error}</Typography>
-            <Keypad onKeypadClick={handleKeypadClick} />
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={isFirstLogin ? handleCreatePin : handleEnterPin}
-              sx={{ marginTop: "20px" }}
-            >
-              {isFirstLogin ? "Create PIN" : "Enter PIN"}
-            </Button>
           </Box>
         </Box>
       </Modal>
