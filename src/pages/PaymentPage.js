@@ -12,8 +12,8 @@ export default function PaymentPage() {
   const [name, setName] = useState("");
   const [account, setAccount] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [recipientId, setRecipientId] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [recipientId, setRecipientId] = useState("");
+  const [amount, setAmount] = useState("");
   const [recipientName, setRecipientName] = useState("No User Found");
   const [open, setOpen] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
@@ -85,6 +85,9 @@ export default function PaymentPage() {
     } else if (amount > balance) {
       alert("The transaction amount exceeds your remaining balance. Please provide a valid amount.");
       return;
+    } else if (amount <= 0) {
+      alert("Please provide a valid amount.");
+      return;
     }
 
     // Show the confirmation dialog
@@ -95,7 +98,7 @@ export default function PaymentPage() {
     setOpen(false); // Close the dialog
 
     // Perform the payment
-    pay(account, recipientId, amount).then((response) => {
+    pay(account, recipientId, parseFloat(amount)).then((response) => {
       if (response) {
         setOpenSuccessModal(true);
       } else {

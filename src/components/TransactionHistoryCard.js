@@ -67,10 +67,10 @@ export default function TransactionHistoryCard({ amount, receiver_acc, sender_ac
         }}
       >
         {account_id === sender_acc ? <Typography variant="subtitle1" sx={{ color: "red", marginRight: "10px", marginLeft: "auto" }}>
-          -${amount}
+          -${amount.toFixed(2)}
         </Typography> :
           <Typography variant="subtitle1" sx={{ color: "green", marginRight: "10px", marginLeft: "auto" }}>
-            ${amount}
+            ${amount.toFixed(2)}
           </Typography>}
 
         <Button onClick={handleModalOpen} sx={{ minWidth: "auto", padding: "0", marginLeft: "10px" }}>
