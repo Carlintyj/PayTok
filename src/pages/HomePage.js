@@ -7,7 +7,7 @@ import { getBalance } from "../services/ProfileService";
 
 export default function HomePage() {
   const [name, setName] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(0.00);
   const [isAgent, setIsAgent] = useState(false);
 
   useEffect(() => {
@@ -18,10 +18,10 @@ export default function HomePage() {
         setIsAgent(user.role === "agent");
         try {
           const balance = await getBalance(user.uid);
-          setBalance(balance !== null ? balance : 0);
+          setBalance(balance !== null ? balance : 0.00);
         } catch (error) {
           console.error("Failed to fetch balance", error);
-          setBalance(0);
+          setBalance(0.00);
         }
       }
     };
