@@ -17,6 +17,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen"; // Added unlock icon
+import BackspaceIcon from '@mui/icons-material/Backspace';
 
 const Keypad = ({ onKeypadClick }) => {
   const keypadLayout = [
@@ -52,7 +53,7 @@ const Keypad = ({ onKeypadClick }) => {
                 onClick={() => handleKeypadClick(key)}
               >
                 {key === "delete" ? (
-                  <Typography variant="h6">←</Typography>
+                  <BackspaceIcon />
                 ) : (
                   <Typography variant="h6">{key}</Typography>
                 )}
