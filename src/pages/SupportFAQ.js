@@ -23,12 +23,12 @@ const faqData = [
     question:
       "Where can I find information about the app's terms and policies?",
     answer:
-      "You can find detailed information about our terms of service and privacy policies within the app. Go to the Settings or Profile section and look for 'Terms and Policies' or a similar option. Click on it to read our full terms of service, privacy policy, and any other relevant policies.",
+      "You can find detailed information about our terms of service and privacy policies within the app. Go to the Profile section and look for 'Terms and Policies'. Click on it to read our full terms of service, privacy policy, and any other relevant policies.",
   },
   {
     question: "How can I change my PIN?",
     answer:
-      "To change your PIN, navigate to the Account Details section in the app. Look for an option labeled 'Change PIN' or 'Security Settings'. Click on this option and follow the instructions to verify your identity and set a new PIN. Remember to choose a PIN that's secure and not easily guessable.",
+      "To change your PIN, navigate to the Account Details section in the app under Profile. Look for an option labeled 'Change PIN'. Click on this option and follow the instructions to verify your identity and set a new PIN. Remember to choose a PIN that's secure and not easily guessable.",
   },
   {
     question: "How can I get help or report an issue?",
