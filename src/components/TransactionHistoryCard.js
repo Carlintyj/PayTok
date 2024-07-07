@@ -57,7 +57,6 @@ export default function TransactionHistoryCard({ amount, receiver_acc, sender_ac
     >
       <Typography variant="h6">{formatDate(timestamp)}</Typography>
       <Typography variant="body1">{otherPartyName}</Typography>
-      <Typography variant="body1" sx={{ color: "grey" }}>{account_id !== sender_acc ? sender_acc === 8268014734 ? "" : sender_acc : receiver_acc}</Typography>
       <Box
         sx={{
           display: "flex",
