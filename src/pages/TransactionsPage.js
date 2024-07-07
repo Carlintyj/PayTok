@@ -19,6 +19,9 @@ export default function Transactions() {
     if (uid !== -1) {
       getTransactionsHistory(uid)
         .then((transactions) => {
+          if (!transactions) {
+            return;
+          }
           const transactionsArray = Object.values(transactions);
           transactionsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
           setHistory(transactionsArray);
